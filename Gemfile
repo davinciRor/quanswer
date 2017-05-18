@@ -23,6 +23,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 
+gem 'devise'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -32,6 +34,7 @@ group :development, :test do
 
   gem 'pry-rails'
   gem 'pry-nav'
+  gem 'launchy'
 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
