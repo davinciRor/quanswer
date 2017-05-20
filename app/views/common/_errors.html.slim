@@ -1,0 +1,5 @@
+- if resource.errors.any?
+  .alert.alert-error.alert-danger
+    button.close data-dismiss="alert" ×
+    - resource.errors.full_messages.each do |msg|
+      li= msg

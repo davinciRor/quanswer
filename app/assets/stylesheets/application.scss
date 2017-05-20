@@ -1,0 +1,16 @@
+@import "bootstrap";
+@import "bootstrap-generators.scss";
+@import "bootstrap-variables.scss";
+@import "answers.scss";
+@import "questions.scss";
+
+.card {
+  border: 1px solid lightgrey;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.field_with_errors {
+  @extend .has-error;
+}

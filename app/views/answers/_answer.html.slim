@@ -1,0 +1,6 @@
+.card.answer
+  .card-block
+    p.card-text
+      = answer.body
+    - if user_signed_in? && current_user.id == answer.user_id
+      = link_to 'x', question_answer_path(question, answer), method: :delete, class: 'btn btn-danger'

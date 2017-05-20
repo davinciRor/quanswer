@@ -1,6 +1,14 @@
+.row
+  .col-lg-4
+    h3 New Question
 = form_for @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Create'
+  = render 'common/errors', resource: @question
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+  .form-group
+    .actions
+      = f.submit 'Create', class: 'btn btn-primary'
