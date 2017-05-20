@@ -3,36 +3,9 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
 
-  describe 'GET #show' do
-    let(:answer) { create(:answer, question: question) }
-
-    before { get :show, params: { question_id: question, id: answer }}
-
-    it 'assigns the requested question to @question' do
-      expect(assigns(:answer)).to eq answer
-    end
-
-    it 'render show view' do
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    sign_in_user
-
-    before { get :new, params: { question_id: question }}
-
-    it 'assigns new Question to question' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
-  end
+  sign_in_user
 
   describe 'POST #create' do
-    sign_in_user
 
     context 'with valid attributes' do
       let(:create_request) { post :create, params: { question_id: question, answer: attributes_for(:answer) }}
@@ -56,8 +29,27 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'should redirect to new view' do
         create_request
-        expect(response).to redirect_to question_path(assigns(:question))
+        expect(response).to render_template 'questions/show'
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:my_answer)  { create(:answer, question: question, user: @user) }
+    let(:user)        { create(:user) }
+    let!(:answer)     { create(:answer, question: question, user: user) }
+
+    it 'delete my answer' do
+      expect { delete :destroy, params: { id: my_answer, question_id: question }}.to change(question.answers, :count).by(-1)
+    end
+
+    it 'redirect to show view after delete my answer' do
+      delete :destroy, params: { id: my_answer, question_id: question }
+      expect(response).to redirect_to question_path(question)
+    end
+
+    it 'delete foreign answer' do
+      expect { delete :destroy, params: { id: answer, question_id: question }}.to change(question.answers, :count).by(0)
     end
   end
 end

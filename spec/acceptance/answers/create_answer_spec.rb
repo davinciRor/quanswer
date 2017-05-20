@@ -17,6 +17,7 @@ feature 'User create answer', %q{
     click_on 'Give an answer'
 
     expect(page).to have_content 'My answer'
+    expect(page).to have_content('Answer successfully created.')
     expect(current_path).to eq question_path(question)
   end
 
@@ -28,7 +29,7 @@ feature 'User create answer', %q{
     click_on 'Give an answer'
 
     expect(page).to have_content('You fill invalid data.')
-    expect(current_path).to eq question_path(question)
+    expect(current_path).to match /(\/questions\/\d+\/answers)/
   end
 
   scenario 'Non-authenticated user try create answer' do

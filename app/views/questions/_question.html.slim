@@ -2,7 +2,7 @@
   .card-block
     h4.card-title
       = question.title
-      - if user_signed_in? && current_user.id == question.user_id
+      - if user_signed_in? && current_user.author_of?(question)
         = link_to 'x', question_path(question), method: :delete, class: 'btn btn-danger close'
     p.card-text
       = question.body

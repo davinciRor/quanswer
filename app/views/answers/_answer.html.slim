@@ -2,5 +2,5 @@
   .card-block
     p.card-text
       = answer.body
-    - if user_signed_in? && current_user.id == answer.user_id
+    - if user_signed_in? && current_user.author_of?(answer)
       = link_to 'x', question_answer_path(question, answer), method: :delete, class: 'btn btn-danger'
