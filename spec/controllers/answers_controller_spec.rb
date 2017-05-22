@@ -49,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'delete foreign answer' do
-      expect { delete :destroy, params: { id: answer, question_id: question }}.to change(question.answers, :count).by(0)
+      expect { delete :destroy, params: { id: answer, question_id: question }}.to_not change(question.answers, :count)
     end
   end
 end

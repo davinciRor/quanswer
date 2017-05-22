@@ -1,3 +1,4 @@
+= render 'common/errors', resource: @answer
 .row
   h2= @question.title
   p= @question.body
@@ -17,5 +18,5 @@
 
 .row.answers
   h4 Answers
-  - @question.answers.where.not(id: nil).each do |answer|
+  - @question.answers.find_each do |answer|
     = render 'answers/answer', answer: answer, question: @question

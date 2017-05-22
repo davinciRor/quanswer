@@ -28,7 +28,7 @@ feature 'User create answer', %q{
     fill_in 'Body', with: ''
     click_on 'Give an answer'
 
-    expect(page).to have_content('You fill invalid data.')
+    expect(page).to have_content("Body can't be blank")
     expect(current_path).to match /(\/questions\/\d+\/answers)/
   end
 

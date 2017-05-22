@@ -8,7 +8,6 @@ class AnswersController < ApplicationController
       flash[:notice] = 'Answer successfully created.'
       redirect_to question_path(@question)
     else
-      flash[:error] = 'You fill invalid data.'
       render 'questions/show'
     end
   end
