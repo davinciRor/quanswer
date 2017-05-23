@@ -22,11 +22,10 @@ feature 'User create answer', %q{
     expect(current_path).to eq question_path(question)
   end
 
-  xscenario 'Authenticated user create answer with invalid data', js: true do
+  scenario 'Authenticated user create answer with invalid data', js: true do
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Body', with: ''
     click_on 'Give an answer'
 
     expect(page).to have_content("Body can't be blank")
