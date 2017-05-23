@@ -13,8 +13,9 @@ gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-
+gem 'rails-ujs'
 gem 'jquery-rails'
+
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -32,8 +33,9 @@ source 'https://rails-assets.org' do
 end
 
 group :development, :test do
-  gem 'capybara', '~> 2.13.0'
-  gem 'selenium-webdriver'
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
 
   gem 'pry-rails'
   gem 'pry-nav'

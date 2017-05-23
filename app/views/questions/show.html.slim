@@ -8,7 +8,7 @@
 .row
   - if user_signed_in?
     h4 Your answer
-    = form_for [@question, @answer] do |f|
+    = form_for([@question, @answer], remote: true) do |f|
       .form-group
         = f.label :body
         = f.text_area :body, class: 'form-control'
@@ -16,7 +16,8 @@
         .actions
           = f.submit 'Give an answer', class: 'btn btn-primary'
 
-.row.answers
+.row
   h4 Answers
-  - @question.answers.find_each do |answer|
-    = render 'answers/answer', answer: answer, question: @question
+  .answers
+    - @question.answers.find_each do |answer|
+      = render 'answers/answer', answer: answer, question: @question

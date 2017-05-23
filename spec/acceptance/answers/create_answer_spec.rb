@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../acceptance_helper'
 
 feature 'User create answer', %q{
   In order to help user
@@ -9,19 +9,20 @@ feature 'User create answer', %q{
   given!(:question) { create(:question) }
   given(:user) { create(:user) }
 
-  scenario 'Authenticated user creates answer with valid data' do
+  scenario 'Authenticated user create answer with valid data', js: true do
     sign_in(user)
     visit question_path(question)
 
     fill_in 'Body', with: 'My answer'
     click_on 'Give an answer'
 
-    expect(page).to have_content 'My answer'
-    expect(page).to have_content('Answer successfully created.')
+    within '.answers' do
+      expect(page).to have_content('My answer')
+    end
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'Authenticated user create answer with invalid data' do
+  scenario 'Authenticated user create answer with invalid data', js: true do
     sign_in(user)
     visit question_path(question)
 
@@ -29,7 +30,7 @@ feature 'User create answer', %q{
     click_on 'Give an answer'
 
     expect(page).to have_content("Body can't be blank")
-    expect(current_path).to match /(\/questions\/\d+\/answers)/
+    expect(current_path).to eq question_path(question)
   end
 
   scenario 'Non-authenticated user try create answer' do
