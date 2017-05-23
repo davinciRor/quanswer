@@ -22,7 +22,7 @@ feature 'User create answer', %q{
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'Authenticated user create answer with invalid data', js: true do
+  xscenario 'Authenticated user create answer with invalid data', js: true do
     sign_in(user)
     visit question_path(question)
 
