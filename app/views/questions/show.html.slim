@@ -19,5 +19,4 @@
 .row
   h4 Answers
   .answers
-    - @question.answers.find_each do |answer|
-      = render 'answers/answer', answer: answer, question: @question
+    = render @question.answers
