@@ -1,4 +1,8 @@
-$(document).ready(function () {
+<% if @answer.errors.present? %>
+  $('#erros-messages').html('<%= j resource_error_messages!(@answer) %>');
+<% else %>
+  $('[data-answer-id="' + "<%= @answer.id %>" + '"]')
+    .replaceWith("<%= j render @answer %>")
   $('.edit-answer-link').on('click', function (e) {
     e.preventDefault();
     $(this).hide();
@@ -6,4 +10,4 @@ $(document).ready(function () {
     $('#delete-answer-link-' + answer_id).hide();
     $('form#edit-answer-' + answer_id).show();
   });
-});
+<% end %>
