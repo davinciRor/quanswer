@@ -64,16 +64,18 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer)     { create(:answer, question: question, user: user) }
 
     it 'delete my answer' do
-      expect { delete :destroy, params: { id: my_answer, question_id: question }}.to change(question.answers, :count).by(-1)
+      expect { delete :destroy, params: { id: my_answer, question_id: question }, format: :js }
+          .to change(question.answers, :count).by(-1)
     end
 
-    it 'redirect to show view after delete my answer' do
-      delete :destroy, params: { id: my_answer, question_id: question }
-      expect(response).to redirect_to question_path(question)
+    it 'render template destroy' do
+      delete :destroy, params: { id: my_answer, question_id: question, format: :js }
+      expect(response).to render_template :destroy
     end
 
     it 'delete foreign answer' do
-      expect { delete :destroy, params: { id: answer, question_id: question }}.to_not change(question.answers, :count)
+      expect { delete :destroy, params: { id: answer, question_id: question, format: :js }}
+          .to_not change(question.answers, :count)
     end
   end
 end
