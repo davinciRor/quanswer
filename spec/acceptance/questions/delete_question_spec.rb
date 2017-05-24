@@ -16,7 +16,7 @@ feature 'User delete question', %q{
 
     scenario 'delete own question' do
       visit questions_path
-      click_on 'x'
+      find('.delete-question-link').click
 
       expect(current_path).to eq questions_path
       expect(all('.question').count).to eq 0
@@ -28,7 +28,7 @@ feature 'User delete question', %q{
 
     scenario 'try delete foreign question' do
       visit questions_path
-      expect(page).to_not have_link 'x'
+      expect(page).to_not have_css('.delete-question-link')
     end
   end
 end

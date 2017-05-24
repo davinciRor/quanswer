@@ -8,7 +8,7 @@ feature 'User edit question', %q{
 } do
 
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
   given(:new_user) { create(:user) }
 
   describe 'Authenticated user' do
@@ -19,7 +19,7 @@ feature 'User edit question', %q{
       end
 
       scenario 'sees link to Edit' do
-        within '.answers' do
+        within '.questions' do
           expect(page).to have_css '.edit-question-link'
         end
       end
@@ -41,16 +41,16 @@ feature 'User edit question', %q{
 
     scenario 'try to edit other user`s question' do
       sign_in(new_user)
-      visit question_path(question)
+      visit questions_path
 
       within '.questions' do
-        expect(page).to_not have_css '.edit-questoin-link'
+        expect(page).to_not have_css '.edit-question-link'
       end
     end
   end
 
   scenario 'Non-authenticated user try edit question' do
-    visit question_path(question)
+    visit questions_path
 
     within '.questions' do
       expect(page).to_not have_css '.edit-question-link'

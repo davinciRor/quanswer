@@ -1,10 +1,24 @@
-.card.question
+.card.question data-question-id="#{question.id}"
   .card-block
     h4.card-title
       = question.title
-      - if user_signed_in? && current_user.author_of?(question)
-        = link_to 'x', question_path(question), method: :delete, class: 'btn btn-danger close'
     p.card-text
       = question.body
-    = link_to 'Show', question_path(question), class: 'btn btn-primary'
+    = link_to question_path(question), class: 'btn btn-primary show-question-link', id: "show-question-link-#{question.id}"
+      span.glyphicon.glyphicon-eye-open
+    - if user_signed_in? && current_user.author_of?(question)
+      = form_for question, method: :patch, remote: true, html: { id: "edit-question-#{question.id}" } do |f|
+        .form-group
+          = f.label :title
+          = f.text_field :title, class: 'form-control'
+        .form-group
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+        .actions
+          = f.submit 'Save', class: 'btn btn-warning'
+      = link_to question_path(question), method: :delete, class: 'btn btn-danger delete-question-link', id: "delete-question-link-#{question.id}"
+        span.glyphicon.glyphicon-trash
+      = link_to '', class: 'edit-question-link btn btn-warning'
+        span.glyphicon.glyphicon-pencil
+
 

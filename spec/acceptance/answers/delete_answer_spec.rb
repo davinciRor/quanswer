@@ -11,12 +11,12 @@ feature 'User delete answer', %q{
   given(:question)  { create(:question, user: me) }
   given!(:answer)   { create(:answer, question: question, user: me, body: 'MyAnswer') }
 
-  scenario 'Author can delete own answer' do
+  scenario 'Author can delete own answer', js: true do
     sign_in(me)
     visit question_path(question)
 
     within '.answers' do
-      click_on 'x'
+      find('.delete-answer-link').click
     end
 
     expect(current_path).to eq question_path(question)
@@ -27,12 +27,12 @@ feature 'User delete answer', %q{
     sign_in user
     visit question_path(question)
 
-    expect(page).to_not have_content 'x'
+    expect(page).to_not have_css('.delete-answer-link')
   end
 
   scenario 'Unauthorized user can not delete foreign answer' do
     visit question_path(question)
-    expect(page).to_not have_content 'x'
+    expect(page).to_not have_css('.delete-answer-link')
   end
 
 end

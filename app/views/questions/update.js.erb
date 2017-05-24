@@ -1,0 +1,14 @@
+<% if @question.errors.present? %>
+$('#erros-messages').html('<%= j resource_error_messages!(@question) %>');
+<% else %>
+$('[data-question-id="' + "<%= @question.id %>" + '"]')
+  .replaceWith("<%= j render @question %>")
+$('.edit-question-link').on('click', function (e) {
+  e.preventDefault();
+  $(this).hide();
+  var question_id = $(this).parents('.question').data('questionId');
+  $('#delete-question-link-' + question_id).hide();
+  $('#show-question-link-' + question_id).hide();
+  $('form#edit-question-' + question_id).show();
+});
+<% end %>

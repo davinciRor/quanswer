@@ -10,7 +10,7 @@ feature 'User show question', %q{
 
   scenario 'User look through question' do
     visit questions_path
-    click_on 'Show'
+    find('.show-question-link').click
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
