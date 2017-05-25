@@ -34,7 +34,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question) }
 
     it 'assigns the requested question to @question' do
       patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
@@ -55,6 +55,19 @@ RSpec.describe AnswersController, type: :controller do
     it 'render update template' do
       patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
       expect(response).to render_template :update
+    end
+
+    context 'best' do
+      let!(:best_answer) { create(:answer, question: question, best: true) }
+
+      before { patch :update, params: { id: answer, question_id: question, answer: { best: true }, format: :js }}
+
+      it 'change' do
+        answer.reload
+        best_answer.reload
+        expect(answer.best).to eq true
+        expect(best_answer.best).to eq false
+      end
     end
   end
 

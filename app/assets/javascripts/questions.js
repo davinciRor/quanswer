@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $('.edit-question-link').on('click', function (e) {
+  $('.edit-question-link').click( function (e) {
     e.preventDefault();
     $(this).hide();
     var question_id = $(this).parents('.question').data('questionId');

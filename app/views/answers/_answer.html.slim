@@ -1,16 +1,26 @@
 - if answer.persisted?
   .card.answer data-answer-id="#{answer.id}"
+    - if answer.best?
+      .h4.card-title.best-answer-title
+        span.glyphicon.glyphicon-ok
+        span Best Answer
     .card-block
       p.card-text
         = answer.body
-      - if user_signed_in? && current_user.author_of?(answer)
-        = link_to question_answer_path(answer.question, answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
-          span.glyphicon.glyphicon-trash
-        = link_to '', class: 'edit-answer-link btn btn-warning'
-          span.glyphicon.glyphicon-pencil
-        = form_for [answer.question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
-          .form-group
-            = f.label :body, 'Answer'
-            = f.text_area :body, class: 'form-control'
-          .actions
-            = f.submit 'Save', class: 'btn btn-warning'
+      - if user_signed_in?
+        - if current_user.author_of?(answer)
+          = link_to question_answer_path(answer.question, answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
+            span.glyphicon.glyphicon-trash
+          = link_to '', class: 'edit-answer-link btn btn-warning'
+            span.glyphicon.glyphicon-pencil
+          = form_for [answer.question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
+            .form-group
+              = f.label :body, 'Answer'
+              = f.text_area :body, class: 'form-control'
+            .actions
+              = f.submit 'Save', class: 'btn btn-warning'
+        - if current_user.author_of?(answer.question)
+          = form_for [answer.question, answer], method: :patch, remote: true, html: { class: 'best-answer close', id: "best-answer-link-#{answer.id}" } do |f|
+            = f.hidden_field :best, value: true
+            .actions
+              = f.submit 'Best', class: 'btn btn-success'

@@ -1,13 +1,19 @@
 <% if @answer.errors.present? %>
   $('#erros-messages').html('<%= j resource_error_messages!(@answer) %>');
 <% else %>
-  $('[data-answer-id="' + "<%= @answer.id %>" + '"]')
-    .replaceWith("<%= j render @answer %>")
+  <% if @answer.best? %>
+    $('.best-answer-title').remove();
+    $('.answers').html('<%= j render 'questions/answers' %>');
+  <% else %>
+    $('[data-answer-id="' + "<%= @answer.id %>" + '"]')
+      .replaceWith("<%= j render @answer %>")
+  <% end %>
   $('.edit-answer-link').on('click', function (e) {
     e.preventDefault();
     $(this).hide();
     var answer_id = $(this).parents('.answer').data('answerId');
     $('#delete-answer-link-' + answer_id).hide();
     $('form#edit-answer-' + answer_id).show();
+    $('#best-answer-link-' + answer_id).hide();
   });
 <% end %>

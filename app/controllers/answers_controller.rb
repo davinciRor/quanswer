@@ -8,7 +8,11 @@ class AnswersController < ApplicationController
 
   def update
     @answer = @question.answers.find(params[:id])
-    @answer.update(answer_params)
+    if params[:answer] && params[:answer][:best]
+      @answer.make_best!
+    else
+      @answer.update(answer_params)
+    end
   end
 
   def destroy
