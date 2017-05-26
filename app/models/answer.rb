@@ -7,10 +7,6 @@ class Answer < ApplicationRecord
   scope :best_answers,     -> { where(best: true) }
   scope :not_best_answers, -> { where(best: false) }
 
-  def self.best_answer
-    best_answers.first
-  end
-
   def make_best!
     ActiveRecord::Base.transaction do
       unless best?
