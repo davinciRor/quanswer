@@ -23,6 +23,8 @@ gem 'slim-rails'
 
 gem 'devise'
 
+gem 'carrierwave'
+
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bootstrap-generators', '~> 3.3.4'
 

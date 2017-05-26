@@ -70,6 +70,10 @@ GEM
     capybara-webkit (1.14.0)
       capybara (>= 2.3.0, < 2.14.0)
       json
+    carrierwave (1.1.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
     coderay (1.1.1)
     concurrent-ruby (1.0.5)
     database_cleaner (1.6.1)
@@ -245,6 +249,7 @@ DEPENDENCIES
   bootstrap-generators (~> 3.3.4)
   capybara
   capybara-webkit
+  carrierwave
   database_cleaner
   devise
   factory_girl_rails
