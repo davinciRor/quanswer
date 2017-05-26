@@ -20,7 +20,4 @@
             .actions
               = f.submit 'Save', class: 'btn btn-warning'
         - if current_user.author_of?(answer.question)
-          = form_for [answer.question, answer], method: :patch, remote: true, html: { class: 'best-answer close', id: "best-answer-link-#{answer.id}" } do |f|
-            = f.hidden_field :best, value: true
-            .actions
-              = f.submit 'Best', class: 'btn btn-success'
+          = link_to 'Best', make_best_question_answer_path(answer.question, answer), method: :patch, remote: true, class: 'best-answer-btn btn btn-success', id: "best-answer-link-#{answer.id}"

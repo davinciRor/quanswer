@@ -7,14 +7,16 @@ class Answer < ApplicationRecord
   scope :best_answers,     -> { where(best: true) }
   scope :not_best_answers, -> { where(best: false) }
 
-  def best?
-    best
+  def self.best_answer
+    best_answers.first
   end
 
   def make_best!
     ActiveRecord::Base.transaction do
-      question.answers.best_answers.update_all(best: false)
-      update_attribute(:best, true)
+      unless best?
+        question.answers.update_all(best: false)
+        update!(best: true)
+      end
     end
   end
 end
