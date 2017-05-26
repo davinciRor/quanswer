@@ -1,13 +1,8 @@
 <% if @answer.errors.present? %>
   $('#erros-messages').html('<%= j resource_error_messages!(@answer) %>');
 <% else %>
-  <% if @answer.best? %>
-    $('.best-answer-title').remove();
-    $('.answers').html('<%= j render 'questions/answers' %>');
-  <% else %>
-    $('[data-answer-id="' + "<%= @answer.id %>" + '"]')
-      .replaceWith("<%= j render @answer %>")
-  <% end %>
+  $('[data-answer-id="' + "<%= @answer.id %>" + '"]')
+    .replaceWith("<%= j render @answer %>")
   $('.edit-answer-link').on('click', function (e) {
     e.preventDefault();
     $(this).hide();

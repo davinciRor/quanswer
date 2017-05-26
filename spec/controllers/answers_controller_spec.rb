@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let!(:question) { create(:question) }
-
   sign_in_user
+  let!(:question) { create(:question, user: @user) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -34,7 +33,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: @user) }
 
     it 'assigns the requested question to @question' do
       patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
@@ -56,18 +55,23 @@ RSpec.describe AnswersController, type: :controller do
       patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
       expect(response).to render_template :update
     end
+  end
 
-    context 'best' do
-      let!(:best_answer) { create(:answer, question: question, best: true) }
+  describe '#PATCH make_best' do
+    let!(:answer) { create(:answer, question: question) }
+    let!(:best_answer) { create(:answer, question: question, best: true) }
 
-      before { patch :update, params: { id: answer, question_id: question, answer: { best: true }, format: :js }}
+    before { patch :make_best, params: { id: answer, question_id: question  , answer: { best: true }, format: :js }}
 
-      it 'change' do
-        answer.reload
-        best_answer.reload
-        expect(answer.best).to eq true
-        expect(best_answer.best).to eq false
-      end
+    it 'change best answer' do
+      answer.reload
+      best_answer.reload
+      expect(answer.best).to eq true
+      expect(best_answer.best).to eq false
+    end
+
+    it 'render template make_best' do
+      expect(response).to render_template :make_best
     end
   end
 

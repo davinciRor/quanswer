@@ -1,22 +1,21 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :destroy, :update]
   before_action :find_question
+  before_action :find_answer, only: [:update, :make_best, :destroy]
 
   def create
     @answer = @question.answers.create(answer_params.merge({ user: current_user }))
   end
 
   def update
-    @answer = @question.answers.find(params[:id])
-    if params[:answer] && params[:answer][:best]
-      @answer.make_best!
-    else
-      @answer.update(answer_params)
-    end
+    @answer.update(answer_params) if current_user.author_of?(@answer)
+  end
+
+  def make_best
+    @answer.make_best! if current_user.author_of?(@question)
   end
 
   def destroy
-    @answer = @question.answers.find(params[:id])
     @answer.destroy if current_user.author_of?(@answer)
   end
 
@@ -24,6 +23,10 @@ class AnswersController < ApplicationController
 
   def find_question
     @question = Question.find(params[:question_id])
+  end
+
+  def find_answer
+    @answer = @question.answers.find(params[:id])
   end
 
   def answer_params

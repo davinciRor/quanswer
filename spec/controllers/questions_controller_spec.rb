@@ -90,21 +90,23 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
 
+    let(:my_question) { create(:question, user: @user) }
+
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-        expect(assigns(:question)).to eq question
+        patch :update, params: { id: my_question, question: attributes_for(:question), format: :js }
+        expect(assigns(:question)).to eq my_question
       end
 
       it 'change question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }
-        question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
+        patch :update, params: { id: my_question, question: { title: 'new title', body: 'new body'}, format: :js }
+        my_question.reload
+        expect(my_question.title).to eq 'new title'
+        expect(my_question.body).to eq 'new body'
       end
 
       it 'render update template' do
-        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        patch :update, params: { id: my_question, question: attributes_for(:question), format: :js }
         expect(response).to render_template :update
       end
     end
