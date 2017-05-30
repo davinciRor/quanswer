@@ -28,7 +28,7 @@ feature 'Add files to answer', %q{
 
     click_on 'Give an answer'
 
-    within "#answer_#{answer.id}" do
+    within ".answers" do
       expect(page).to have_link 'spec_helper.rb'
       expect(page).to have_link 'rails_helper.rb'
     end
@@ -56,34 +56,6 @@ feature 'Add files to answer', %q{
     it 'can`t destroy answer`s file' do
       within ".answers-attachments" do
         expect(page).to_not have_content('remove file')
-      end
-    end
-  end
-
-  context 'update answer' do
-    given!(:answer) { create(:answer, user: user, question: question, attachments: create_list(:attachment, 2)) }
-    given!(:edit_answer) { create(:answer, user: user, question: question, attachments: create_list(:attachment, 2)) }
-    background { visit question_path(question) }
-
-    scenario 'user add files', js: true do
-      within "#answer_#{answer.id}" do
-        find('.edit-answer-link').click
-        click_link "Add"
-        within '#files' do
-          file_inputs = all("input[type='file']")
-          file_inputs[-1].set "#{Rails.root}/spec/spec_helper.rb"
-        end
-        click_on 'Save'
-        expect(page).to have_css('.answer-file', count: 3)
-      end
-    end
-
-    scenario 'user remove file', js: true do
-      within "#answer_#{edit_answer.id}" do
-        find('.edit-answer-link').click
-        first('.remove_fields').click
-        click_on 'Save'
-        expect(page).to have_css('.answer-file', count: 1)
       end
     end
   end

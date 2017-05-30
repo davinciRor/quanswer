@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: [:update, :make_best, :destroy]
 
   def create
-    binding.pry
     @answer = @question.answers.create(answer_params.merge({ user: current_user }))
   end
 

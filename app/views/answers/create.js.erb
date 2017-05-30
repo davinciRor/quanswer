@@ -1,8 +1,11 @@
 <% if @answer.errors.present? %>
   $('#erros-messages').html('<%= j resource_error_messages!(@answer) %>');
 <% else %>
-  debugger;
-  $('#best-answer-element').after("<%= j render @answer %>");
+  <% if remotipart_submitted? %>
+    $('#best-answer-element').after("<%= j "#{render @answer}" %>");
+  <% else %>
+    $('#best-answer-element').after("<%= j render @answer %>");
+  <% end %>
   $('#answer_body').val('');
   $('.edit-answer-link').click(function (e) {
     e.preventDefault();

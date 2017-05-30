@@ -52,32 +52,4 @@ feature 'User add file to question', %q{
       end
     end
   end
-
-  context '#edit question' do
-    background { visit questions_path }
-
-    scenario 'User add files', js: true do
-      within "#question_#{question_for_edit.id}" do
-        click_on 'Edit'
-      end
-      click_link "Add file"
-      within '#files' do
-        file_inputs = all("input[type='file']")
-        file_inputs[-1].set "#{Rails.root}/spec/spec_helper.rb"
-      end
-      click_on 'Submit'
-      within "#question_#{question_for_edit.id}" do
-        expect(page).to have_content 'Attachments count: 3'
-      end
-    end
-
-    scenario 'User remove file', js: true do
-      within "#question_#{question_for_edit.id}" do
-        click_on 'Edit'
-      end
-      first('.remove_fields').click
-      click_on 'Submit'
-      expect(page).to have_content 'Attachments count: 1'
-    end
-  end
 end
