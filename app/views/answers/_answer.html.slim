@@ -1,5 +1,5 @@
 - if answer.persisted?
-  .card.answer data-answer-id="#{answer.id}"
+  .card.answer data-answer-id="#{answer.id}" id=dom_id(answer)
     - if answer.best?
       .h4.card-title.best-answer-title
         span.glyphicon.glyphicon-ok
@@ -7,6 +7,11 @@
     .card-block
       p.card-text
         = answer.body
+        ul.answers-attachments
+          - answer.attachments.each do |a|
+            li= link_to a.file.identifier, a.file.url
+            - if user_signed_in? && current_user.author_of?(answer)
+              p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
       - if user_signed_in?
         - if current_user.author_of?(answer)
           = link_to question_answer_path(answer.question, answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
@@ -17,6 +22,13 @@
             .form-group
               = f.label :body, 'Answer'
               = f.text_area :body, class: 'form-control'
+            .form-group
+              h4 Attachments
+              #files
+                = f.fields_for :attachments do |attachment|
+                  = render 'attachments/file', f: attachment
+                .links
+                  = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
             .actions
               = f.submit 'Save', class: 'btn btn-warning'
         - if current_user.author_of?(answer.question)

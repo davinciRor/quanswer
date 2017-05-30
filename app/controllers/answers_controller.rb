@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: [:update, :make_best, :destroy]
 
   def create
+    binding.pry
     @answer = @question.answers.create(answer_params.merge({ user: current_user }))
   end
 
@@ -30,6 +31,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, attachments_attributes: [:file, :_destroy])
   end
 end

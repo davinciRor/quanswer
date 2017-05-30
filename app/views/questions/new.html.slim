@@ -11,9 +11,11 @@
     = f.text_area :body, class: 'form-control'
   .form-group
     h4 Attachments
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file, class: 'form-control-file'
+    #files
+      = f.fields_for :attachments do |attachment|
+        = render 'attachments/file', f: attachment
+      .links
+        = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
 
   .form-group
     .actions

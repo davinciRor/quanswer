@@ -28,6 +28,9 @@ gem 'carrierwave'
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bootstrap-generators', '~> 3.3.4'
 
+gem 'remotipart'
+gem 'cocoon'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
