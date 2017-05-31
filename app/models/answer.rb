@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Attachable
+
   belongs_to :question
   belongs_to :user
 
