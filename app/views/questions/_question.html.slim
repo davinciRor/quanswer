@@ -1,4 +1,13 @@
 .card.question data-question-id="#{question.id}" id=dom_id(question)
+  .card_block
+    h4.card-title.valuation
+      = question.rating
+    - if user_signed_in? && !current_user.author_of?(question)
+      ul.nav.justify-content-end.votes
+        li.nav-item
+          = link_to 'Like', like_question_path(question), method: :post, remote: :true, class: 'question-vote'
+        li.nav-item
+          = link_to 'Dislike', dislike_question_path(question), method: :post, remote: :true, class: 'question-vote'
   .card-block
     h4.card-title
       = question.title
@@ -20,5 +29,3 @@
         span.glyphicon.glyphicon-trash
       = link_to '', class: 'edit-question-link btn btn-warning'
         span.glyphicon.glyphicon-pencil
-
-

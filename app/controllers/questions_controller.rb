@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :edit, :update, :destroy]
+  before_action :find_question, only: [:show, :edit, :update, :destroy, :like, :dislike]
 
   def index
     @questions = Question.all
@@ -36,6 +36,20 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy if current_user.author_of?(@question)
     redirect_to questions_path
+  end
+
+  def like
+    @vote = @question.votes.create(mark: 1, user: current_user)
+    respond_to do |format|
+      format.json { render json: @vote }
+    end
+  end
+
+  def dislike
+    @vote = @question.votes.create(mark: -1, user: current_user)
+    respond_to do |format|
+      format.json { render json: @vote }
+    end
   end
 
   private

@@ -140,4 +140,18 @@ RSpec.describe QuestionsController, type: :controller do
       expect { delete :destroy, params: { id: other_question }}.to change(Question, :count).by(0)
     end
   end
+
+  describe 'POST #like' do
+    sign_in_user
+
+    let!(:question) { create(:question) }
+
+    it 'change likes count' do
+      expect { post :like, params: { id: question, format: :json }}.to change(question.likes, :count).by(1)
+    end
+
+    it 'change votes count' do
+      expect { post :like, params: { id: question, format: :json }}.to change(Vote, :count).by(1)
+    end
+  end
 end
