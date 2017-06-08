@@ -4,5 +4,5 @@ class Vote < ApplicationRecord
 
   validates :mark, presence: true
   validates :mark, inclusion: { in: [1, -1] }
-  validates :user_id, uniqueness: { scope: [:votable_type, :votable_id] }
+  validates :user_id, uniqueness: { scope: [:votable_type, :votable_id], message: 'You already voted!' }
 end

@@ -3,11 +3,11 @@ require_relative '../acceptance_helper'
 feature 'User vote for question', %q{
   In order to evaluate question
   As an authenticate user
-  I want to be able vote for user
+  I want to be able vote for question
 } do
 
   describe 'Authenticate user' do
-    context 'as an author' do
+    describe 'as an author' do
       given(:author) { create(:user) }
       given!(:question) { create(:question, user: author) }
 
@@ -16,13 +16,12 @@ feature 'User vote for question', %q{
         visit questions_path
 
         within "#question_#{question.id}" do
-          expect(page).to_not have_link('Like')
-          expect(page).to_not have_link('Dislike')
+          expect(page).to_not have_css '.question-vote'
         end
       end
     end
 
-    context 'as an no-author' do
+    describe 'as an no-author' do
       given(:user) { create(:user) }
       given!(:question) { create(:question) }
 
@@ -31,21 +30,54 @@ feature 'User vote for question', %q{
         visit(questions_path)
       end
 
-      scenario 'click dislike' do
+      scenario 'click like', js: true do
         within "#question_#{question.id}" do
+          find('.vote-like').click
+          expect(page).to have_content('1')
+        end
+      end
+
+      scenario 'click dislike', js: true do
+        within "#question_#{question.id}" do
+          find('.vote-dislike').click
           expect(page).to have_content('-1')
         end
       end
 
-      scenario 'click like' do
-        within "#question_#{question.id}" do
-          expect(page).to have_content('1')
+      context 'try vote liked question' do
+        given!(:like) { create(:vote, user: user, votable: question, mark: 1) }
+
+        scenario 'click like', js: true do
+          within "#question_#{question.id}" do
+            find('.vote-like').click
+            expect(page).to have_content('You already voted!')
+          end
+        end
+
+        scenario 'click dislike', js: true do
+          within "#question_#{question.id}" do
+            find('.vote-dislike').click
+            expect(page).to have_content('You already voted!')
+          end
+        end
+
+        scenario 'click unvote', js: true do
+          within "#question_#{question.id}" do
+            find('.vote-unvote').click
+            expect(page).to have_content('0')
+          end
         end
       end
     end
   end
 
   describe 'Non authenticate user' do
-    scenario 'show rating'
+    given!(:question) { create(:question) }
+    given!(:like) { create(:vote, votable: question, mark: 1) }
+
+    scenario 'show rating' do
+      visit(questions_path)
+      expect(page).to have_content('1')
+    end
   end
 end
