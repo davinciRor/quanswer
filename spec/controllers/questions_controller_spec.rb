@@ -154,4 +154,13 @@ RSpec.describe QuestionsController, type: :controller do
       expect { post :like, params: { id: question, format: :json }}.to change(Vote, :count).by(1)
     end
   end
+
+  describe 'DELETE #unvote' do
+    sign_in_user
+    let(:question) { create(:question) }
+
+    it 'remove current_user`s vote' do
+
+    end
+  end
 end

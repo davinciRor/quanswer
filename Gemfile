@@ -50,6 +50,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'faker'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 end
 

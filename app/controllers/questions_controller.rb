@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :edit, :update, :destroy, :like, :dislike]
+  before_action :find_question, only: [:show, :edit, :update, :destroy, :like, :dislike, :unvote]
 
   def index
     @questions = Question.all
@@ -39,16 +39,36 @@ class QuestionsController < ApplicationController
   end
 
   def like
-    @vote = @question.votes.create(mark: 1, user: current_user)
-    respond_to do |format|
-      format.json { render json: @vote }
+    unless current_user.author_of?(@question)
+      @vote = @question.votes.create(mark: 1, user: current_user)
+
+      respond_to do |format|
+        if @vote.save
+          format.json { render json: @vote }
+        else
+          format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+        end
+      end
     end
   end
 
   def dislike
-    @vote = @question.votes.create(mark: -1, user: current_user)
-    respond_to do |format|
-      format.json { render json: @vote }
+    unless current_user.author_of?(@question)
+      @vote = @question.votes.build(mark: -1, user: current_user)
+
+      respond_to do |format|
+        if @vote.save
+          format.json { render json: @vote }
+        else
+          format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+        end
+      end
+    end
+  end
+
+  def unvote
+    unless current_user.author_of?(@question)
+      Vote.where(user: current_user, votable: @question).destroy_all
     end
   end
 

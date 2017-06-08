@@ -1,13 +1,23 @@
 .card.question data-question-id="#{question.id}" id=dom_id(question)
   .card_block
-    h4.card-title.valuation
-      = question.rating
+    h4.card-title
+      span= "Rating: "
+      span.valuation
+        = question.rating
     - if user_signed_in? && !current_user.author_of?(question)
       ul.nav.justify-content-end.votes
         li.nav-item
-          = link_to 'Like', like_question_path(question), method: :post, remote: :true, class: 'question-vote'
+          = link_to like_question_path(question), method: :post, remote: :true, class: 'question-vote'
+            span
+              i.glyphicon.glyphicon-thumbs-up.like
         li.nav-item
-          = link_to 'Dislike', dislike_question_path(question), method: :post, remote: :true, class: 'question-vote'
+          = link_to dislike_question_path(question), method: :post, remote: :true, class: 'question-vote'
+            span
+              i.glyphicon.glyphicon-thumbs-down.dislike
+        li.nav-item
+          = link_to unvote_question_path(question), method: :post, remote: :true, class: 'question-vote'
+            span
+              i.glyphicon.glyphicon-remove-circle.unvote
   .card-block
     h4.card-title
       = question.title

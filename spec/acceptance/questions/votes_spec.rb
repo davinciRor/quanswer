@@ -33,11 +33,13 @@ feature 'User vote for question', %q{
 
       scenario 'click dislike' do
         within "#question_#{question.id}" do
+          expect(page).to have_content('-1')
         end
       end
 
       scenario 'click like' do
         within "#question_#{question.id}" do
+          expect(page).to have_content('1')
         end
       end
     end
