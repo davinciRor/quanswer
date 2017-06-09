@@ -60,8 +60,25 @@ feature 'User vote for question', %q{
             expect(page).to have_content('You already voted!')
           end
         end
+      end
+
+      # NOT WORK CORECTLY
+      context 'after like' do
+        given!(:like_vote) { create(:vote, user: user, votable: question, mark: 1) }
 
         scenario 'click unvote', js: true do
+          within "#question_#{question.id}" do
+            find('.vote-unvote').click
+            expect(page).to have_content('0')
+          end
+        end
+      end
+
+      #NOT WORK CORECTLY
+      context 'after dislike' do
+        given!(:dislike_vote) { create(:vote, user: user, votable: question, mark: -1) }
+
+        scenario 'click unvote after like', js: true do
           within "#question_#{question.id}" do
             find('.vote-unvote').click
             expect(page).to have_content('0')

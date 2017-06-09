@@ -4,6 +4,26 @@
       .h4.card-title.best-answer-title
         span.glyphicon.glyphicon-ok
         span Best Answer
+    .card_block
+      h4.card-title
+        span= "Rating: "
+        span.valuation
+          = answer.rating
+      .vote-error
+      - if user_signed_in? && !current_user.author_of?(answer)
+        ul.nav.justify-content-end.votes
+          li.nav-item
+            = link_to like_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-like'
+              span
+                i.glyphicon.glyphicon-thumbs-up.like
+          li.nav-item
+            = link_to dislike_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-dislike'
+              span
+                i.glyphicon.glyphicon-thumbs-down.dislike
+          li.nav-item
+            = link_to unvote_answer_path(answer), method: :delete, remote: :true, class: 'answer-vote vote-unvote'
+              span
+                i.glyphicon.glyphicon-remove-circle.unvote
     .card-block
       p.card-text
         = answer.body

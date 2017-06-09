@@ -15,7 +15,7 @@ RSpec.describe Vote, type: :model do
     it 'vote not valid' do
       vote = Vote.new(user: user, votable: question, mark: 1)
       vote.valid?
-      expect(vote.errors[:user_id]).to eq(['has already been taken'])
+      expect(vote.errors[:user_id]).to eq(['You already voted!'])
     end
   end
 end

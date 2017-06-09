@@ -11,12 +11,14 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable] do
-    resources :answers, concerns: [:votable] do
+    resources :answers do
       member do
         patch :make_best
       end
     end
   end
+
+  resources :answers, only: [], concerns: [:votable]
 
   resources :attachments, only: [:destroy]
 end

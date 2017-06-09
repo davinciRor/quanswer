@@ -15,7 +15,6 @@ $(document).ready(function () {
     var voteMark = JSON.parse(xhr.responseText).mark;
     var $questionRating = $('#question_' + questionId + ' .valuation');
     var rating = parseInt($questionRating.text());
-
     $questionRating.text(rating + voteMark);
   }).bind('ajax:error', function(e, xhr, status, error) {
     var questionId = $(this).parents('.question').data('questionId');
