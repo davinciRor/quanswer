@@ -14,6 +14,6 @@ module Votable
   end
 
   def rating
-    self.votes.sum(&:mark)
+    self.votes.sum(:mark)
   end
 end
