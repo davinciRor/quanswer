@@ -22,4 +22,13 @@ $(document).ready(function () {
     var error = JSON.parse(xhr.responseText)[0][0];
     $errorsBlock.html('<span>' + error + '</span>');
   });
+
+  App.cable.subscriptions.create("AnswersChannel", {
+    connected: function () {
+      this.perform("follow", { id: id });
+    },
+    received: function (data) {
+      console.log(data);
+    }
+  });
 });
