@@ -46,9 +46,10 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if @question.errors.any?
+    _question = @question.attributes.merge({rating: @question.rating})
     ActionCable.server.broadcast(
         'questions',
-        { question: @question.to_json }
+        { question: _question.to_json }
     )
   end
 

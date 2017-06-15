@@ -1,5 +1,5 @@
 = render 'common/errors', resource: @answer
-.row
+.row.question data-question-id="#{@question.id}"
   h2= @question.title
   p= @question.body
   - if user_signed_in? && current_user.author_of?(@question)

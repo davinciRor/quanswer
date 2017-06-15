@@ -31,6 +31,10 @@ gem 'bootstrap-generators', '~> 3.3.4'
 gem 'remotipart'
 gem 'cocoon'
 
+gem 'skim'
+
+gem 'active_model_serializers'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end

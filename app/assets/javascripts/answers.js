@@ -23,11 +23,18 @@ $(document).ready(function () {
     $errorsBlock.html('<span>' + error + '</span>');
   });
 
-  App.cable.subscriptions.create("AnswersChannel", {
+  var question_id = $('.question').data('questionId');
+
+  App.cable.subscriptions.create({ channel: "AnswersChannel", question_id: question_id }, {
     connected: function () {
-      this.perform("follow", { id: id });
+      this.perform("follow");
     },
     received: function (data) {
+      var current_user_id = $('.user').data('currentUserId');
+      var user = JSON.parse(data);
+      if( current_user_id != user.user_id ) {
+        //render
+      }
       console.log(data);
     }
   });

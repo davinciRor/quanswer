@@ -1,0 +1,28 @@
+.card.question data-question-id="#{@question.id}" id="question_#{@question.id}"
+  .card_block
+    h4.card-title
+      span= "Rating: "
+      span.valuation
+        = @question.rating
+    .vote-error
+    - if @current_user_id
+      ul.nav.justify-content-end.votes
+        li.nav-item
+          a class="question-vote vote-like" data-remote="true" rel="nofollow" data-method="post" href="/questions/#{@question.id}/like"
+            span
+              i.glyphicon.glyphicon-thumbs-up.like
+        li.nav-item
+          a class="question-vote vote-dislike" data-remote="true" rel="nofollow" data-method="post" href="/questions/#{@question.id}/dislike"
+            span
+              i.glyphicon.glyphicon-thumbs-down.dislike
+        li.nav-item
+          a class="question-vote vote-unvote" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}/unvote"
+            span
+              i.glyphicon.glyphicon-remove-circle.unvote
+    .card-block
+    h4.card-title
+      = @question.title
+    p.card-text
+      = @question.body
+    a href="/questions/#{@question.id}" class='btn btn-primary show-question-link' id="show-question-link-#{@question.id}"
+      span.glyphicon.glyphicon-eye-open

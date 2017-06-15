@@ -3,6 +3,8 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:create, :update, :make_best, :destroy]
   before_action :find_answer, only: [:update, :make_best, :destroy]
 
+  after_action :publish_answer, only: [:create]
+
   include Voted
 
   def create
@@ -25,6 +27,13 @@ class AnswersController < ApplicationController
 
   def find_question
     @question = Question.find(params[:question_id])
+  end
+
+  def publish_answer
+    ActionCable.server.broadcast(
+        "answers_for_question_#{params[:question_id]}",
+        answer: @answer.to_json
+    )
   end
 
   def find_answer

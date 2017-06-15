@@ -15,7 +15,7 @@ html
     = javascript_include_tag 'application'
     = action_cable_meta_tag
     = csrf_meta_tags
-  body
+  body.user data-current_user_id="#{current_user&.id}"
     .navbar.navbar-default.navbar-static-top role="navigation"
       .container
         .navbar-header
