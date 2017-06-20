@@ -1,5 +1,5 @@
 <% if @answer.errors.present? %>
-  $('#erros-messages').html('<%= j resource_error_messages!(@answer) %>');
+  $('#errors-messages').html('<%= j resource_error_messages!(@answer) %>');
 <% else %>
   <% if remotipart_submitted? %>
     $('#best-answer-element').after("<%= j "#{render @answer}" %>");
