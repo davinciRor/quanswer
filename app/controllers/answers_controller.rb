@@ -32,7 +32,7 @@ class AnswersController < ApplicationController
   def publish_answer
     ActionCable.server.broadcast(
         "answers_for_question_#{params[:question_id]}",
-        answer: @answer.to_json
+        answer: @answer.as_json(include: :attachments).merge({rating: @answer.rating}).to_json
     )
   end
 

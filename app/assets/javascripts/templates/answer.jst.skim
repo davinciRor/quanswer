@@ -1,0 +1,28 @@
+.card.answer data-answer-id="#{@answer.id}" id="answer_#{@answer.id}"
+  .card_block
+    h4.card-title
+      span= "Rating: "
+      span.valuation
+        = @answer.rating
+      .vote-error
+      - if @current_user_id
+        ul.nav.justify-content-end.votes
+          li.nav-item
+            a class="answer-vote vote-like" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/like"
+              span
+                i.glyphicon.glyphicon-thumbs-up.like
+          li.nav-item
+            a class="answer-vote vote-dislike" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/dislike"
+              span
+                i.glyphicon.glyphicon-thumbs-down.dislike
+          li.nav-item
+            a class="answer-vote vote-unvote" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}/unvote"
+              span
+                i.glyphicon.glyphicon-remove-circle.unvote
+  .card-block
+    p.card-text
+      = @answer.body
+    ul.answers-attachments
+      - for attachment in @answer.attachments
+        li
+          a href="#{attachment.file.url}" = attachment.file.url.substring(attachment.file.url.lastIndexOf('/')+1)

@@ -38,4 +38,31 @@ feature 'User create answer', %q{
     expect(page).to_not have_content 'Your answer'
     expect(page).to_not have_content 'Give an answer'
   end
+
+  context 'multy session' do
+    given(:question) { create(:question) }
+
+    scenario 'answer appears an another user`s page', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+      Capybara.using_session('user') do
+        fill_in 'Body', with: 'My answer'
+        click_on 'Give an answer'
+
+        within '.answers' do
+          expect(page).to have_content('My answer')
+        end
+      end
+      Capybara.using_session('guest') do
+        within '.answers' do
+          expect(page).to have_content('My answer')
+        end
+      end
+    end
+  end
 end
