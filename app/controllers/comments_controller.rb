@@ -2,6 +2,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
 
+  after_action :publish_comment, only: [:create]
+
   def create
     @comment = @commentable.comments.build(comment_params.merge(user: current_user))
     respond_to do |format|
@@ -11,6 +13,13 @@ class CommentsController < ApplicationController
         format.json { render json: @comment.errors.full_messages, status: :unprocessable_entity }
       end
     end
+  end
+
+  def publish_comment
+    ActionCable.server.broadcast(
+        "comments_for_question_#{params[:question_id]}",
+        comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
+    )
   end
 
   private
