@@ -9,24 +9,35 @@ feature 'Add comment to question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  # context 'auth user' do
-  #   background do
-  #     sign_in(user)
-  #     visit question_path(question)
-  #   end
-  #
-  #   it 'try add comment', js: true do
-  #     click_on 'Add Comment'
-  #     fill_in 'Body', with: 'My Comment'
-  #     click_on 'Save'
-  #     expect(page).have_content 'My Comment'
-  #   end
-  # end
-  #
-  # context 'non-auth user' do
-  #   it 'try comment' do
-  #     expect(page).to_not have_content 'Add comment'
-  #   end
-  # end
+  context 'auth user' do
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
+    it 'try add comment', js: true do
+      within '.question-comment' do
+        fill_in 'Body', with: 'My Comment'
+        click_on 'Add Comment'
+      end
+      within '.comments' do
+        expect(page).to have_content 'My Comment'
+      end
+    end
+
+    it 'try add comment with invalid data', js: true do
+      click_on 'Add Comment'
+      within '.comment-errors' do
+        expect(page).to have_content "Body can't be blank"
+      end
+    end
+  end
+
+  context 'non-auth user' do
+    background { visit question_path(question) }
+
+    it 'try comment' do
+      expect(page).to_not have_content 'Add comment'
+    end
+  end
 end

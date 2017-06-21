@@ -23,6 +23,18 @@ $(document).ready(function () {
     $errorsBlock.html('<span>' + error + '</span>');
   });
 
+  $('#new_comment').bind('ajax:success', function(e, data, status,xhr) {
+    var comment = JSON.parse(xhr.responseText);
+    $('#comment_body').val("");
+    $('.comments').append(JST["templates/comment"]({
+      comment: comment
+    }));
+  }).bind('ajax:error', function (e, xhr, status, error) {
+    var $errorsBlock = $('.comment-errors');
+    var error = JSON.parse(xhr.responseText)[0];
+    $errorsBlock.html('<span>' + error + '</span>');
+  });
+
   App.cable.subscriptions.create("QuestionsChannel", {
     connected: function () {
       this.perform("follow");

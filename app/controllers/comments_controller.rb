@@ -1,13 +1,14 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_commentable
 
   def create
-    @comment = @commentable.comments.build(comment_params)
+    @comment = @commentable.comments.build(comment_params.merge(user: current_user))
     respond_to do |format|
       if @comment.save
         format.json { render json: @comment }
       else
-        format.json { render json: @comment.errors.messages, status: :unprocessable_entity }
+        format.json { render json: @comment.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end

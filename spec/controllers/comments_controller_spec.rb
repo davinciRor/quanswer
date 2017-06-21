@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
   describe '#POST create' do
+    sign_in_user
+
     let(:question) { create(:question) }
     let(:create_response) { JSON.parse(response.body) }
 
