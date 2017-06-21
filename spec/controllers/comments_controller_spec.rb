@@ -43,7 +43,7 @@ RSpec.describe CommentsController, type: :controller do
 
       it 'json have message' do
         invalid_create_request
-        expect(create_response['body']).to eq ["can't be blank"]
+        expect(create_response).to eq ["Body can't be blank"]
       end
     end
   end

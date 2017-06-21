@@ -26,11 +26,23 @@ $(document).ready(function () {
   $('#new_comment').bind('ajax:success', function(e, data, status,xhr) {
     var comment = JSON.parse(xhr.responseText);
     $('#comment_body').val("");
-    $('.comments').append(JST["templates/comment"]({
+    $('.question-comments').append(JST["templates/comment"]({
       comment: comment
     }));
   }).bind('ajax:error', function (e, xhr, status, error) {
-    var $errorsBlock = $('.comment-errors');
+    var $errorsBlock = $('.question-comment-errors');
+    var error = JSON.parse(xhr.responseText)[0];
+    $errorsBlock.html('<span>' + error + '</span>');
+  });
+
+  $('#new_answer_comment_form').bind('ajax:success', function(e, data, status,xhr) {
+    var comment = JSON.parse(xhr.responseText);
+    $('#new_answer_comment_form textarea').val("");
+    $('.answer-comments').append(JST["templates/comment"]({
+      comment: comment
+    }));
+  }).bind('ajax:error', function (e, xhr, status, error) {
+    var $errorsBlock = $('.answer-comment-errors');
     var error = JSON.parse(xhr.responseText)[0];
     $errorsBlock.html('<span>' + error + '</span>');
   });

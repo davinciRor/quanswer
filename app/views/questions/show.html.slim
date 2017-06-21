@@ -13,8 +13,7 @@
           - if current_user.author_of?(@question)
             p= link_to "remove file", attachment_path(a), method: :delete, class: 'remove-file'
 
-- if user_signed_in?
-  = render 'comments/comment_block', commentable: @question
+= render 'comments/question_comment_block', commentable: @question
 
 .row
   - if user_signed_in?

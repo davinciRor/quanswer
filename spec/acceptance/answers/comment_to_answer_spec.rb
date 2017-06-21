@@ -1,13 +1,14 @@
 require_relative '../acceptance_helper'
 
-feature 'Add comment to question', %q{
-  In order to ask questions about question
+feature 'Add comment to answer', %q{
+  In order to ask questions about answer
   As a authenticate user
   I want to be able add comment
 } do
 
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
+  given!(:answer) { create(:answer, question: question) }
 
   context 'auth user' do
     background do
@@ -16,18 +17,20 @@ feature 'Add comment to question', %q{
     end
 
     it 'try add comment', js: true do
-      within '.question-comment' do
+      within '.answer-comment' do
         fill_in 'Body', with: 'My Comment'
         click_on 'Add Comment'
       end
-      within '.question-comments' do
+      within '.answer-comments' do
         expect(page).to have_content 'My Comment'
       end
     end
 
     it 'try add comment with invalid data', js: true do
-      click_on 'Add Comment'
-      within '.question-comment-errors' do
+      within '.answer-comment' do
+        click_on 'Add Comment'
+      end
+      within '.answer-comment-errors' do
         expect(page).to have_content "Body can't be blank"
       end
     end

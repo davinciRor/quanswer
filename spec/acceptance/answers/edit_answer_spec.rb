@@ -8,7 +8,7 @@ feature 'User edit answer', %q{
 
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user, body: 'TEST') }
   given(:new_user) { create(:user) }
 
   describe 'Authenticated user' do
@@ -33,7 +33,7 @@ feature 'User edit answer', %q{
 
           expect(page).to_not have_content answer.body
           expect(page).to have_content 'Edited answer'
-          expect(page).to_not have_selector 'textarea'
+          expect(page).to_not have_selector '#answer_body'
         end
       end
     end

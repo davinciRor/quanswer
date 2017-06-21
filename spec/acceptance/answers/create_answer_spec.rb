@@ -13,8 +13,10 @@ feature 'User create answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Body', with: 'My answer'
-    click_on 'Give an answer'
+    within '.new_answer' do
+      fill_in 'Body', with: 'My answer'
+      click_on 'Give an answer'
+    end
 
     within '.answers' do
       expect(page).to have_content('My answer')
@@ -51,8 +53,10 @@ feature 'User create answer', %q{
         visit question_path(question)
       end
       Capybara.using_session('user') do
-        fill_in 'Body', with: 'My answer'
-        click_on 'Give an answer'
+        within '.new_answer' do
+          fill_in 'Body', with: 'My answer'
+          click_on 'Give an answer'
+        end
 
         within '.answers' do
           expect(page).to have_content('My answer')

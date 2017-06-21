@@ -1,0 +1,20 @@
+.row
+  h4 Comments
+  ul.question-comments
+    - commentable.comments.each do |comment|
+      li
+        p
+          strong= comment.user_email
+        p= comment.body
+
+- if user_signed_in?
+  .row.question-comment
+    h4 Your Comment
+    = form_for([commentable, @comment], remote: true) do |f|
+      .question-comment-errors.comment-errors
+      .form-group
+        = f.label :body
+        = f.text_area :body, class: 'form-control'
+      .form-group
+        .actions
+          = f.submit 'Add Comment', class: 'btn btn-primary'
