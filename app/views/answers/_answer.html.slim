@@ -27,11 +27,15 @@
     .card-block
       p.card-text
         = answer.body
-        ul.answers-attachments
-          - answer.attachments.each do |a|
-            li= link_to a.file.identifier, a.file.url
-            - if user_signed_in? && current_user.author_of?(answer)
-              p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
+    .card-block
+      = render 'comments/answer_comment_block', commentable: answer
+    .card-block
+      ul.answers-attachments
+        - answer.attachments.each do |a|
+          li= link_to a.file.identifier, a.file.url
+          - if user_signed_in? && current_user.author_of?(answer)
+            p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
+    .card-block
       - if user_signed_in?
         - if current_user.author_of?(answer)
           = link_to question_answer_path(answer.question, answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"

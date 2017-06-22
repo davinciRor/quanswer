@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable] do
+    resources :comments
     resources :answers do
       member do
         patch :make_best
@@ -18,7 +19,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :answers, only: [], concerns: [:votable]
+
+  resources :answers, only: [], concerns: [:votable] do
+    resources :comments
+  end
 
   resources :attachments, only: [:destroy]
+
+  mount ActionCable.server => '/cable'
 end

@@ -2,6 +2,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :edit, :update, :destroy]
 
+  after_action :publish_question, only: [:create]
+
   include Voted
 
   def index
@@ -11,6 +13,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = @question.answers.build
     @answer.attachments.build
+    @comment = @question.comments.build
   end
 
   def new
@@ -41,6 +44,15 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def publish_question
+    return if @question.errors.any?
+    _question = @question.attributes.merge({rating: @question.rating})
+    ActionCable.server.broadcast(
+        'questions',
+        { question: _question.to_json }
+    )
+  end
 
   def questions_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file])

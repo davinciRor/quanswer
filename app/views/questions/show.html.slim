@@ -1,5 +1,5 @@
 = render 'common/errors', resource: @answer
-.row
+.row.question data-question-id="#{@question.id}"
   h2= @question.title
   p= @question.body
   - if user_signed_in? && current_user.author_of?(@question)
@@ -12,6 +12,9 @@
           = link_to a.file.identifier, a.file.url
           - if current_user.author_of?(@question)
             p= link_to "remove file", attachment_path(a), method: :delete, class: 'remove-file'
+
+= render 'comments/question_comment_block', commentable: @question
+
 .row
   - if user_signed_in?
     h4 Your answer

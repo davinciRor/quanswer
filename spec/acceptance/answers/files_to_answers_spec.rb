@@ -15,18 +15,19 @@ feature 'Add files to answer', %q{
   end
 
   scenario 'Users add file to answer', js: true do
-    fill_in 'Body', with: 'My answer'
-    click_on 'Add'
+    within '.new_answer' do
+      fill_in 'Body', with: 'My answer'
+      click_on 'Add'
 
-    within '#files' do
-      file_inputs = all("input[type='file']")
-      if file_inputs.count == 2
-        file_inputs[0].set "#{Rails.root}/spec/spec_helper.rb"
-        file_inputs[1].set "#{Rails.root}/spec/rails_helper.rb"
+      within '#files' do
+        file_inputs = all("input[type='file']")
+        if file_inputs.count == 2
+          file_inputs[0].set "#{Rails.root}/spec/spec_helper.rb"
+          file_inputs[1].set "#{Rails.root}/spec/rails_helper.rb"
+        end
       end
+      click_on 'Give an answer'
     end
-
-    click_on 'Give an answer'
 
     within ".answers" do
       expect(page).to have_link 'spec_helper.rb'
