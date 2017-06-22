@@ -39,7 +39,6 @@ $(document).ready(function () {
           current_user: current_user_id
         }));
       }
-      console.log(data);
 
       $('.answer-vote').bind('ajax:success', function (e, data, status, xhr) {
         var answerId = $(this).parents('.answer').data('answerId');

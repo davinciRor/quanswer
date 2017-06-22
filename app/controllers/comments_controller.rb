@@ -16,10 +16,17 @@ class CommentsController < ApplicationController
   end
 
   def publish_comment
-    ActionCable.server.broadcast(
-        "comments_for_question_#{params[:question_id]}",
-        comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
-    )
+    if @commentable.is_a? Question
+      ActionCable.server.broadcast(
+          "comments_for_question_#{params[:question_id]}",
+          comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
+      )
+    elsif @commentable.is_a? Answer
+      ActionCable.server.broadcast(
+          "comments_for_answer_#{params[:answer_id]}",
+          comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
+      )
+    end
   end
 
   private
