@@ -31,19 +31,20 @@ $(document).ready(function () {
     }));
   }).bind('ajax:error', function (e, xhr, status, error) {
     var $errorsBlock = $('.question-comment-errors');
-    var error = JSON.parse(xhr.responseText)[0];
+    var error = JSON.parse(xhr.responseText).errors[0];
     $errorsBlock.html('<span>' + error + '</span>');
   });
 
-  $('#new_answer_comment_form').bind('ajax:success', function(e, data, status,xhr) {
+  $('.answer-comment .new_comment').bind('ajax:success', function(e, data, status,xhr) {
     var comment = JSON.parse(xhr.responseText);
-    $('#new_answer_comment_form textarea').val("");
-    $('.answer-comments').append(JST["templates/comment"]({
+    $('#answer_' + comment.commentable_id + ' .new_comment textarea').val("");
+    $('#answer_' + comment.commentable_id + ' .answer-comments').append(JST["templates/comment"]({
       comment: comment
     }));
   }).bind('ajax:error', function (e, xhr, status, error) {
-    var $errorsBlock = $('.answer-comment-errors');
-    var error = JSON.parse(xhr.responseText)[0];
+    var commantable_id = JSON.parse(xhr.responseText).commentable_id;
+    var $errorsBlock = $('#answer_' + commantable_id + ' .answer-comment-errors');
+    var error = JSON.parse(xhr.responseText).errors[0];
     $errorsBlock.html('<span>' + error + '</span>');
   });
 

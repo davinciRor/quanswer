@@ -10,26 +10,27 @@ class CommentsController < ApplicationController
       if @comment.save
         format.json { render json: @comment }
       else
-        format.json { render json: @comment.errors.full_messages, status: :unprocessable_entity }
+        format.json { render json: comment_errors, status: :unprocessable_entity }
       end
     end
   end
 
   def publish_comment
-    if @commentable.is_a? Question
-      ActionCable.server.broadcast(
-          "comments_for_question_#{params[:question_id]}",
-          comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
-      )
-    elsif @commentable.is_a? Answer
-      ActionCable.server.broadcast(
-          "comments_for_answer_#{params[:answer_id]}",
-          comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
-      )
-    end
+    ActionCable.server.broadcast(
+        'comments',
+        comment: @comment.attributes.merge({ user_email: @comment.user.email }).to_json
+    )
   end
 
   private
+
+  def comment_errors
+    {
+        commentable_id: @comment.commentable_id,
+        commentable_type: @comment.commentable_type,
+        errors: @comment.errors.full_messages
+    }
+  end
 
   def set_commentable
     klass = [Question, Answer].detect{|c| params["#{c.name.underscore}_id"]}
