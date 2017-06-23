@@ -1,12 +1,7 @@
 .row
   h4 Comments
   ul.question-comments
-    - commentable.comments.each do |comment|
-      li
-        p
-          strong= comment.user_email
-        p= comment.body
-
+    = render commentable.comments
 - if user_signed_in?
   .row.question-comment
     h4 Your Comment

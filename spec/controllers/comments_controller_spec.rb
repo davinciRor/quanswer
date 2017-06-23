@@ -5,7 +5,18 @@ RSpec.describe CommentsController, type: :controller do
     sign_in_user
 
     let(:question) { create(:question) }
+    let(:answer)   { create(:answer) }
     let(:create_response) { JSON.parse(response.body) }
+
+    it 'load question if parent question' do
+      post :create, params: { question_id: question.id, comment: { body: 'Body' }, format: :json }
+      expect(assigns(:commentable)).to eq question
+    end
+
+    it 'load question if parent question' do
+      post :create, params: { answer_id: answer.id, comment: { body: 'Body' }, format: :json }
+      expect(assigns(:commentable)).to eq answer
+    end
 
     context 'with valid attributes' do
       let(:valid_create_request) { post :create,
@@ -14,7 +25,7 @@ RSpec.describe CommentsController, type: :controller do
 
       it 'should return ok' do
         valid_create_request
-        expect(response).to have_http_status :ok
+        expect(response).to have_http_status :created
       end
 
       it 'should change in db comment count' do

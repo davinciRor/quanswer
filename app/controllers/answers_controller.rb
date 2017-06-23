@@ -1,22 +1,25 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :destroy, :update]
-  before_action :find_question, only: [:create, :update, :make_best, :destroy]
-  before_action :find_answer, only: [:update, :make_best, :destroy]
+  before_action :find_question, only: [:create]
+  before_action :find_answer, only: [:update, :destroy, :make_best]
 
   after_action :publish_answer, only: [:create]
 
   include Voted
 
+  respond_to :js
+
   def create
-    @answer = @question.answers.create(answer_params.merge({ user: current_user }))
+    respond_with(@answer = @question.answers.create(answer_params.merge({ user: current_user })))
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with @answer
   end
 
   def make_best
-    @answer.make_best! if current_user.author_of?(@question)
+    @answer.make_best! if current_user.author_of?(@answer.question)
   end
 
   def destroy
@@ -37,7 +40,7 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params

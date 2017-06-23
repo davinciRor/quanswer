@@ -37,7 +37,7 @@ feature 'User choose best answer', %q{
 
     scenario 'cat`t choose best answer for question' do
       sign_in(new_user)
-      visit questions_path(question)
+      visit question_path(question)
 
       expect(page).to_not have_link 'Best'
     end

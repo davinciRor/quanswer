@@ -23,7 +23,7 @@ $(document).ready(function () {
     $errorsBlock.html('<span>' + error + '</span>');
   });
 
-  $('#new_comment').bind('ajax:success', function(e, data, status,xhr) {
+  $('.question-comment .new_comment').bind('ajax:success', function(e, data, status,xhr) {
     var comment = JSON.parse(xhr.responseText);
     $('#comment_body').val("");
     $('.question-comments').append(JST["templates/comment"]({

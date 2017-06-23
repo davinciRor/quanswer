@@ -35,24 +35,19 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     let!(:answer) { create(:answer, question: question, user: @user) }
 
-    it 'assigns the requested question to @question' do
-      patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
-      expect(assigns(:question)).to eq question
-    end
-
     it 'assigns the requested answer to @answer' do
-      patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
+      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
       expect(assigns(:answer)).to eq answer
     end
 
     it 'change answer attributes' do
-      patch :update, params: { question_id: question, id: answer, answer: { body: 'new body' }, format: :js }
+      patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
       answer.reload
       expect(answer.body).to eq 'new body'
     end
 
     it 'render update template' do
-      patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer), format: :js }
+      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
       expect(response).to render_template :update
     end
   end
@@ -61,7 +56,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question) }
     let!(:best_answer) { create(:answer, question: question, best: true) }
 
-    before { patch :make_best, params: { id: answer, question_id: question  , answer: { best: true }, format: :js }}
+    before { patch :make_best, params: { id: answer, answer: { best: true }, format: :js }}
 
     it 'change best answer' do
       answer.reload
@@ -81,17 +76,17 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer)     { create(:answer, question: question, user: user) }
 
     it 'delete my answer' do
-      expect { delete :destroy, params: { id: my_answer, question_id: question }, format: :js }
+      expect { delete :destroy, params: { id: my_answer, }, format: :js }
           .to change(question.answers, :count).by(-1)
     end
 
     it 'render template destroy' do
-      delete :destroy, params: { id: my_answer, question_id: question, format: :js }
+      delete :destroy, params: { id: my_answer, format: :js }
       expect(response).to render_template :destroy
     end
 
     it 'delete foreign answer' do
-      expect { delete :destroy, params: { id: answer, question_id: question, format: :js }}
+      expect { delete :destroy, params: { id: answer, format: :js }}
           .to_not change(question.answers, :count)
     end
   end
