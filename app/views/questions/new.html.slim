@@ -12,7 +12,7 @@
   .form-group
     h4 Attachments
     #files
-      = f.fields_for :attachments do |attachment|
+      = f.fields_for :attachments, @question.attachments.build do |attachment|
         = render 'attachments/file', f: attachment
       .links
         = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'

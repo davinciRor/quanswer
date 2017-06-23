@@ -26,7 +26,7 @@
       .form-group
         h4 Attachments
         #files
-          = f.fields_for :attachments do |attachment|
+          = f.fields_for :attachments, @answer.attachments.build do |attachment|
             = render 'attachments/file', f: attachment
           .links
             = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
@@ -37,4 +37,4 @@
 .row
   h4 Answers
   .answers
-    = render 'answers'
+    = render 'answers', question: @question

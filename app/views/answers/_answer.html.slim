@@ -38,11 +38,11 @@
     .card-block
       - if user_signed_in?
         - if current_user.author_of?(answer)
-          = link_to question_answer_path(answer.question, answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
+          = link_to answer_path(answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
             span.glyphicon.glyphicon-trash
           = link_to '', class: 'edit-answer-link btn btn-warning'
             span.glyphicon.glyphicon-pencil
-          = form_for [answer.question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
+          = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
             .form-group
               = f.label :body, 'Answer'
               = f.text_area :body, class: 'form-control'
@@ -56,4 +56,4 @@
             .actions
               = f.submit 'Save', class: 'btn btn-warning'
         - if current_user.author_of?(answer.question)
-          = link_to 'Best', make_best_question_answer_path(answer.question, answer), method: :patch, remote: true, class: 'best-answer-btn btn btn-success', id: "best-answer-link-#{answer.id}"
+          = link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true, class: 'best-answer-btn btn btn-success', id: "best-answer-link-#{answer.id}"

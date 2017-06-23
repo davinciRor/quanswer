@@ -4,14 +4,12 @@ class CommentsController < ApplicationController
 
   after_action :publish_comment, only: [:create]
 
+  respond_to :json
+
   def create
-    @comment = @commentable.comments.build(comment_params.merge(user: current_user))
-    respond_to do |format|
-      if @comment.save
-        format.json { render json: @comment }
-      else
-        format.json { render json: comment_errors, status: :unprocessable_entity }
-      end
+    @comment = @commentable.comments.create(comment_params.merge(user: current_user))
+    respond_with @comment do |format|
+      format.json { render json: comment_errors, status: :unprocessable_entity } if @comment.invalid?
     end
   end
 

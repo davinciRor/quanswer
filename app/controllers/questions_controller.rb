@@ -1,49 +1,53 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:show, :edit, :update, :destroy]
+  before_action :build_answer,  only: [:show]
+  before_action :build_comment, only: [:show]
 
-  after_action :publish_question, only: [:create]
+  after_action  :publish_question, only: [:create]
 
   include Voted
 
+  respond_to :html, except: [:update]
+  respond_to :js, only: [:update]
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
-    @comment = @question.comments.build
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit
   end
 
   def create
-    @question = current_user.questions.new(questions_params)
-    if @question.save
-      flash[:notice] = 'Your question successfully created.'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(questions_params))
   end
 
   def update
     @question.update(questions_params) if current_user.author_of?(@question)
+    respond_with @question
   end
 
   def destroy
-    @question.destroy if current_user.author_of?(@question)
-    redirect_to questions_path
+    respond_with(@question.destroy) if current_user.author_of?(@question)
   end
 
   private
+
+  def build_answer
+    @answer = @question.answers.build
+  end
+
+  def build_comment
+    @comment = @question.comments.build
+  end
 
   def publish_question
     return if @question.errors.any?

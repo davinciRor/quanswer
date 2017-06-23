@@ -1,12 +1,7 @@
 h4.card-title
   span Comments
 ul.answer-comments
-  - commentable.comments.each do |comment|
-    li
-      p
-        strong= comment.user_email
-      p= comment.body
-
+  = render commentable.comments
 - if user_signed_in?
   .answer-comment
     h4.card_title
