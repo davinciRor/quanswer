@@ -37,6 +37,10 @@ gem 'active_model_serializers'
 
 gem 'responders', '~> 2.0'
 
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
