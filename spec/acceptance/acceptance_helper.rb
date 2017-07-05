@@ -1,10 +1,12 @@
 require 'rails_helper'
+require 'capybara/email/rspec'
 
 RSpec.configure do |config|
   Capybara.javascript_driver = :webkit
   Capybara.server = :puma
 
   config.include AcceptanceMacros, type: :feature
+  config.include OmniauthMacros, type: :feature
 
   config.use_transactional_fixtures = false
 
@@ -22,3 +24,5 @@ Capybara::Webkit.configure do |config|
   config.allow_url("https://oss.maxcdn.com/respond/1.4.2/respond.min.js")
   config.allow_url("oss.maxcdn.com")
 end
+
+OmniAuth.config.test_mode = true
