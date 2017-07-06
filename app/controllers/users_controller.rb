@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_authorization_check
+
   def finish_signup
     @user = User.find(params[:id])
     if request.patch? && params[:user]

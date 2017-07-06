@@ -1,7 +1,10 @@
 class AttachmentsController < ApplicationController
+  before_action :set_attachment
+
+  authorize_resource
+
   def destroy
-    @attachment = Attachment.find(params[:id])
-    @attachment.destroy if current_user.author_of?(@attachment.attachable)
+    @attachment.destroy
     flash[:notice] = 'Success destroyed.'
     case @attachment.attachable_type
     when 'Question'
@@ -9,5 +12,11 @@ class AttachmentsController < ApplicationController
     when 'Answer'
       redirect_to question_path(@attachment.attachable.question)
     end
+  end
+
+  private
+
+  def set_attachment
+    @attachment = Attachment.find(params[:id])
   end
 end

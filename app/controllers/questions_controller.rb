@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   after_action  :publish_question, only: [:create]
 
+  authorize_resource
+
   include Voted
 
   respond_to :html, except: [:update]
@@ -23,20 +25,17 @@ class QuestionsController < ApplicationController
     respond_with(@question = Question.new)
   end
 
-  def edit
-  end
-
   def create
     respond_with(@question = current_user.questions.create(questions_params))
   end
 
   def update
-    @question.update(questions_params) if current_user.author_of?(@question)
+    @question.update(questions_params)
     respond_with @question
   end
 
   def destroy
-    respond_with(@question.destroy) if current_user.author_of?(@question)
+    respond_with(@question.destroy, location: questions_path)
   end
 
   private
