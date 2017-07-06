@@ -10,15 +10,16 @@ feature 'User sign up', %q{
     visit root_path
     click_on 'Sign up'
 
-    fill_in 'Email', with: 'test@mail.ru'
+    fill_in 'Email', with: 'test@example.com'
     fill_in 'Password', with: '123456'
     fill_in 'Password confirmation', with: '123456'
 
     click_button 'Sign up'
 
-    expect(page).to have_content('test@mail.ru')
-    expect(page).to have_content('Welcome! You have signed up successfully.')
-    expect(current_path).to eq root_path
+    open_email('test@example.com')
+    current_email.click_link 'Confirm'
+
+    expect(page).to have_content('Your email address has been successfully confirmed.')
   end
 
   scenario 'register with invalid date' do
