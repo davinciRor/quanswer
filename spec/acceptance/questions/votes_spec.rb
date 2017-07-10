@@ -74,7 +74,6 @@ feature 'User vote for question', %q{
         end
       end
 
-      #NOT WORK CORECTLY
       context 'after dislike' do
         given!(:dislike_vote) { create(:vote, user: user, votable: question, mark: -1) }
 

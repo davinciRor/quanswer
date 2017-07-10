@@ -76,7 +76,7 @@ feature 'User vote for answer', %q{
       end
 
       context 'after dislike' do
-        scenario 'click unvote after like', js: true do
+        scenario 'click unvote after dislike', js: true do
           within "#answer_#{answer.id}" do
             find('.vote-dislike').click
             wait_for_ajax

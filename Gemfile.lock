@@ -65,6 +65,7 @@ GEM
     bootstrap-generators (3.3.4)
       railties (>= 3.1.0)
     builder (3.2.3)
+    cancancan (2.0.0)
     capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
@@ -301,6 +302,7 @@ DEPENDENCIES
   active_model_serializers
   bootstrap (~> 4.0.0.alpha6)
   bootstrap-generators (~> 3.3.4)
+  cancancan
   capybara
   capybara-email
   capybara-webkit

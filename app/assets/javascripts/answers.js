@@ -9,6 +9,7 @@ $(document).ready(function () {
   });
 
   $('.answer-vote').bind('ajax:success', function (e, data, status, xhr) {
+    debugger;
     var answerId = $(this).parents('.answer').data('answerId');
     var $errorsBlock = $('#answer_' + answerId + ' .vote-error');
     $errorsBlock.html('');

@@ -5,16 +5,18 @@
       span.valuation
         = question.rating
     .vote-error
-    - if user_signed_in? && !current_user.author_of?(question)
-      ul.nav.justify-content-end.votes
+    ul.nav.justify-content-end.votes
+      - if can?(:like, question)
         li.nav-item
           = link_to like_question_path(question), method: :post, remote: :true, class: 'question-vote vote-like'
             span
               i.glyphicon.glyphicon-thumbs-up.like
+      - if can?(:dislike, question)
         li.nav-item
           = link_to dislike_question_path(question), method: :post, remote: :true, class: 'question-vote vote-dislike'
             span
               i.glyphicon.glyphicon-thumbs-down.dislike
+      - if can?(:unvote, question)
         li.nav-item
           = link_to unvote_question_path(question), method: :delete, remote: :true, class: 'question-vote vote-unvote'
             span
@@ -26,7 +28,7 @@
       = question.body
     = link_to question_path(question), class: 'btn btn-primary show-question-link', id: "show-question-link-#{question.id}"
       span.glyphicon.glyphicon-eye-open
-    - if user_signed_in? && current_user.author_of?(question)
+    - if can?(:edit, question)
       = form_for question, method: :patch, remote: true, html: { id: "edit-question-#{question.id}" } do |f|
         .form-group
           = f.label :title
@@ -36,7 +38,9 @@
           = f.text_area :body, class: 'form-control'
         .actions
           = f.submit 'Save', class: 'btn btn-warning'
+    - if can?(:destroy, question)
       = link_to question_path(question), method: :delete, class: 'btn btn-danger delete-question-link', id: "delete-question-link-#{question.id}"
         span.glyphicon.glyphicon-trash
+    - if can?(:edit, question)
       = link_to '', class: 'edit-question-link btn btn-warning'
         span.glyphicon.glyphicon-pencil
