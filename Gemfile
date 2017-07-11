@@ -44,6 +44,9 @@ gem 'omniauth-twitter'
 gem 'cancancan'
 gem 'doorkeeper'
 
+gem 'oj'
+gem 'oj_mimic_json'
+
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
