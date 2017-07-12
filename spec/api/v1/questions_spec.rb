@@ -106,4 +106,59 @@ describe 'Question API' do
       end
     end
   end
+
+  describe 'POST #create' do
+    context 'unauthorized' do
+      it 'return 401 status if there is no access_token' do
+        post '/api/v1/questions', params: { format: :json }
+        expect(response.status).to eq 401
+      end
+
+      it 'return 401 status if access_token is invalid' do
+        post '/api/v1/questions', params: { format: :json, access_token: '1234' }
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      context 'with valid data' do
+        let(:question_params) { attributes_for(:question) }
+
+        before do
+          post '/api/v1/questions', params: { access_token: access_token.token, format: :json, question: question_params }
+        end
+
+        it 'return 201 status' do
+          expect(response.status).to eq 201
+        end
+
+        %w(title body).each do |attr|
+          it "contains #{attr}" do
+            expect(response.body).to be_json_eql(question_params[attr.to_sym].to_json).at_path(attr)
+          end
+        end
+      end
+
+      context 'with invalid data' do
+        let(:invalid_question_params) {{ body: 'Body', title: '' }}
+        let(:expect_response) do
+          { "errors" => { "title" => ["can't be blank"] }}
+        end
+
+        before do
+          post '/api/v1/questions', params: { access_token: access_token.token, format: :json, question: invalid_question_params }
+        end
+
+        it 'return 422 status' do
+          expect(response.status).to eq 422
+        end
+
+        it 'return errors message' do
+          expect(response.body).to be_json_eql(expect_response.to_json)
+        end
+      end
+    end
+  end
 end
