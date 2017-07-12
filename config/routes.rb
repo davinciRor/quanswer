@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks', confirmations: 'confirmations' }
 
   root to: 'questions#index'
@@ -26,6 +27,15 @@ Rails.application.routes.draw do
   resources :attachments, only: [:destroy]
 
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+    end
+  end
+
 
   mount ActionCable.server => '/cable'
 

@@ -42,6 +42,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
 gem 'cancancan'
+gem 'doorkeeper'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
@@ -65,6 +66,7 @@ end
 group :test do
   gem 'faker'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'json_spec'
 end
 
 group :development do
