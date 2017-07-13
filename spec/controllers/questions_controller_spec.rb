@@ -119,90 +119,9 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #like' do
-    sign_in_user
-    let!(:question) { create(:question) }
-    let(:like_request)   { post :like, params: { id: question, format: :json }}
-    let(:like_response)  { JSON.parse(response.body) }
-
-    it 'change votes' do
-      expect{ like_request }.to change(question.likes, :count).by(1)
-    end
-
-    context 'success' do
-      before { like_request }
-
-      it 'return ok' do
-        expect(response).to have_http_status :ok
-      end
-
-      it 'return vote json mark 1' do
-        expect(like_response['mark']).to eq 1
-      end
-    end
-
-    context 'second vote' do
-      let!(:like) { create(:vote, user: @user, votable: question, mark: 1) }
-
-      before { like_request }
-
-      it 'return error' do
-        expect(like_response).to eq [['You already voted!']]
-      end
-
-      it 'return forbidden' do
-        expect(response).to have_http_status :unprocessable_entity
-      end
-    end
-  end
-
-  describe "POST #dislike" do
-    sign_in_user
-    let!(:question) { create(:question) }
-    let(:dislike_request)   { post :dislike, params: { id: question, format: :json }}
-    let(:dislike_response)  { JSON.parse(response.body) }
-
-    it 'change votes' do
-      expect{ dislike_request }.to change(question.dislikes, :count).by(1)
-    end
-
-    context 'success' do
-      before { dislike_request }
-
-      it 'return ok' do
-        expect(response).to have_http_status :ok
-      end
-
-      it 'return vote json mark 1' do
-        expect(dislike_response['mark']).to eq -1
-      end
-    end
-
-    context 'second vote' do
-      let!(:dislike) { create(:vote, user: @user, votable: question, mark: -1) }
-
-      before { dislike_request }
-
-      it 'return error' do
-        expect(dislike_response).to eq [['You already voted!']]
-      end
-
-      it 'return forbidden' do
-        expect(response).to have_http_status :unprocessable_entity
-      end
-    end
-  end
-
-  describe 'DELETE #unvote' do
-    sign_in_user
-    let(:question)   { create(:question, user: other_user) }
+  it_behaves_like 'Votable Controller' do
+    let!(:votable) { create(:question) }
     let(:other_user) { create(:user) }
-    let!(:like) { create(:vote, votable: question, user: @user, mark: 1) }
-    let(:delete_responce) { JSON.parse(response)}
-    let(:delete_request) { delete :unvote, params: { id: question, format: :json }}
-
-    it 'remove current_user`s vote' do
-      expect { delete_request }.to change(question.likes, :count).by(-1)
-    end
+    let(:votable_with_some_user) { create(:question, user: other_user) }
   end
 end
