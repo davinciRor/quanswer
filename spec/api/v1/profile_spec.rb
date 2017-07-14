@@ -2,16 +2,9 @@ require 'rails_helper'
 
 describe 'Profile API' do
   describe 'GET /me' do
-    context 'unauthorized' do
-      it 'return 401 status if there is no access_token' do
-        get '/api/v1/profiles/me', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
+    it_behaves_like 'API Authenticable' do
+      let(:request_no_token) { get '/api/v1/profiles/me', params: { format: :json }}
+      let(:request_invalid_token) { get '/api/v1/profiles/me', params: { format: :json, access_token: '1234' }}
     end
 
     context 'authorized' do
@@ -39,16 +32,9 @@ describe 'Profile API' do
   end
 
   describe 'GET #index' do
-    context 'unauthorized' do
-      it 'return 401 status if there is no access_token' do
-        get '/api/v1/profiles', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'return 401 status if access_token is invalid' do
-        get '/api/v1/profiles', params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
+    it_behaves_like 'API Authenticable' do
+      let(:request_no_token) { get '/api/v1/profiles', params: { format: :json }}
+      let(:request_invalid_token) { get '/api/v1/profiles', params: { format: :json, access_token: '1234' }}
     end
 
     context 'authorized' do
