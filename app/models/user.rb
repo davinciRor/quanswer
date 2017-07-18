@@ -18,6 +18,12 @@ class User < ApplicationRecord
     self.id == resource.user_id
   end
 
+  def self.send_daily_digest
+    find_each do |user|
+      DailyMailer.digest(user).deliver_later
+    end
+  end
+
   def self.find_for_oauth(auth, signed_in_resource = nil)
     authorization = Authorization.find_for_oauth(auth)
 
