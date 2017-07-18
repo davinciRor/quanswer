@@ -22,4 +22,13 @@ RSpec.describe Question, type: :model do
 
     it_behaves_like 'calculates reputation'
   end
+
+  describe '.today' do
+    let!(:question_yerstaday) { create(:question, created_at: Date.yesterday) }
+    let!(:question_today) { create(:question) }
+
+    it 'should return 1 question' do
+      expect(Question.today).to match_array [question_today]
+    end
+  end
 end

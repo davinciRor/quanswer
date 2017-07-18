@@ -9,6 +9,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  scope :today, -> { where('DATE(created_at) = ?', Date.today) }
+
   def best_answer
     answers.best_answers.first
   end
