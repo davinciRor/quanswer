@@ -20,4 +20,15 @@ RSpec.describe Answer, type: :model do
 
     it_behaves_like 'calculates reputation'
   end
+
+  describe 'mail for question`s author' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+    subject { build(:answer, question: question) }
+
+    it 'shoud send mail after create' do
+      expect(AnswerCreateJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+  end
 end
