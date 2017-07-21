@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :subscriptions, only: [:create]
+
   resources :attachments, only: [:destroy]
 
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup

@@ -12,6 +12,9 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations, dependent: :destroy
 
+  has_many :subscriptions, dependent: :destroy
+  has_many :question_subscriptions, through: :subscriptions, source: :question
+
   validates_format_of :email, without: TEMP_EMAIL_REGEX, on: :update
 
   def author_of?(resource)
