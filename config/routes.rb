@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :subscriptions, only: [:create]
+  resource :subscriptions, only: [:create, :destroy]
 
   resources :attachments, only: [:destroy]
 

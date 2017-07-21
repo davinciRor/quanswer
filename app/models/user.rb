@@ -21,6 +21,14 @@ class User < ApplicationRecord
     self.id == resource.user_id
   end
 
+  def subscribed_for?(question)
+    !!self.subscriptions.where(question_id: question).first
+  end
+
+  def subscribtion_for(question)
+    self.subscriptions.where(question_id: question).first
+  end
+
   def self.send_daily_digest
     find_each do |user|
       DailyMailer.digest(user).deliver_later

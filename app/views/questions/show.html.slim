@@ -2,8 +2,11 @@
 .row.question data-question-id="#{@question.id}"
   h2= @question.title
   p= @question.body
-  -if user_signed_in?
-    = link_to 'Subscribe', subscriptions_path(question_id: @question), method: :post
+  - if user_signed_in?
+    - if current_user.subscribed_for?(@question)
+      = link_to 'Unsubscribe', subscriptions_path(id: current_user.subscribtion_for(@question)), method: :delete
+    - else
+      = link_to 'Subscribe', subscriptions_path(question_id: @question), method: :post
   br
   - if can?(:destroy, @question)
     = link_to 'Delete', question_path(@question), method: :delete
