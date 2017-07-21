@@ -31,4 +31,17 @@ RSpec.describe Answer, type: :model do
       subject.save!
     end
   end
+
+  describe 'mail for question`s subscribers' do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question) }
+    let(:subscription) { create(:subscription, user: user, question: question) }
+
+    subject { build(:answer, question: question) }
+
+    it 'should send mail after create' do
+      expect(AnswerCreateForSubscriberJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+  end
 end
