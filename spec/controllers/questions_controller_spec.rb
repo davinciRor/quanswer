@@ -124,4 +124,15 @@ RSpec.describe QuestionsController, type: :controller do
     let(:other_user) { create(:user) }
     let(:votable_with_some_user) { create(:question, user: other_user) }
   end
+
+  describe 'POST #toogle_notify' do
+    let(:my_question) { create(:question, user: @user) }
+    sign_in_user
+
+    before { post :toogle_notify, params: { id: my_question.id } }
+
+    it 'change bollean value' do
+      expect(my_question.reload.notify_author).to eq false
+    end
+  end
 end

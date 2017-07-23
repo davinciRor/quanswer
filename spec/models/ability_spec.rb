@@ -29,6 +29,7 @@ describe Ability do
     context 'Question' do
       it { should be_able_to :create, Question }
       it { should be_able_to :update, create(:question, user: user), user: user }
+      it { should be_able_to :toogle_notify, create(:question, user: user), user: user }
       it { should_not be_able_to :update, create(:question, user: other), user: user }
 
       it { should be_able_to :like,    create(:question, user: other), user: user }

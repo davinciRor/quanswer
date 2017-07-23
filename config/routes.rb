@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:votable, :commentable], shallow: true, except: [:edit] do
+    member do
+      post :toogle_notify
+    end
     resources :answers, concerns: [:votable, :commentable] do
       member do
         patch :make_best

@@ -26,6 +26,7 @@ class Ability
     can :create,  [Question, Answer, Comment]
     can :update,  [Question, Answer], user: user
     can :destroy, [Question, Answer], user: user
+    can :toogle_notify, [Question], user: user
     can :like,    [Question, Answer] { |votable| votable.user != user }
     can :dislike, [Question, Answer] { |votable| votable.user != user }
     can :unvote,  [Question, Answer] { |votable| votable.user != user }
