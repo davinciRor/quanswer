@@ -25,6 +25,10 @@ gem 'devise'
 
 gem 'carrierwave'
 
+gem 'thinking-sphinx'
+gem 'mysql2'
+
+
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bootstrap-generators', '~> 3.3.4'
 

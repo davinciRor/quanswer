@@ -14,6 +14,9 @@
 !/tmp/.keep
 
 config/database.yml
+config/*.sphinx.conf
+db/sphinx
+
 .idea
 
 /node_modules
