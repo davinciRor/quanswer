@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :edit, :update, :destroy]
+  before_action :find_question, only: [:show, :edit, :update, :destroy, :toogle_notify]
   before_action :build_answer,  only: [:show]
   before_action :build_comment, only: [:show]
 
@@ -36,6 +36,12 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with(@question.destroy, location: questions_path)
+  end
+
+  def toogle_notify
+    @question.notify_author = !@question.notify_author
+    @question.save
+    redirect_to @question, notice: "You #{@question.notify_author? ? 'notify' : 'unnotify'} for question!"
   end
 
   private
