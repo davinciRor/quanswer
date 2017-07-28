@@ -1,0 +1,5 @@
+= render 'searches/search_form'
+.row
+  .items
+    - @items.each do |item|
+      = render partial: item.class.to_s.downcase, locals: { item: item }

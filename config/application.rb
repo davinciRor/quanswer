@@ -21,6 +21,8 @@ module Quanswer
     config.action_cable.disable_request_forgery_protection = false
     config.active_job.queue_adapter = :sidekiq
 
+    config.autoload_paths += %W(#{config.root}/app/services/)
+
     config.generators do |g|
       g.test_framework :rspec,
           fixtures: true,

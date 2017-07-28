@@ -26,6 +26,7 @@ html
             span.icon-bar
             span.icon-bar
           = link_to "Questions - your life", root_path, class: "navbar-brand"
+          = link_to 'Start Search', new_search_path, class: 'navbar-brand'
         #navbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             - if user_signed_in?
