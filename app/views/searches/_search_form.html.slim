@@ -1,0 +1,11 @@
+.row
+  = form_tag start_search_path, method: :get do
+    .col-lg-4
+      .form-group
+        = text_field_tag :text, nil, class: 'form-control', placeholder: 'Text for search'
+    .col-lg-4
+      .form-group
+        = select_tag 'model', options_for_select(SearchService::SEARCH_LIST), class: 'form-control', include_blank: true
+    .col-lg-4
+      .form-group
+        = submit_tag 'Search', class: 'btn btn-default'

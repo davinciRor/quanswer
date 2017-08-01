@@ -25,6 +25,10 @@ gem 'devise'
 
 gem 'carrierwave'
 
+gem 'thinking-sphinx'
+gem 'mysql2'
+
+
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bootstrap-generators', '~> 3.3.4'
 
@@ -57,6 +61,7 @@ source 'https://rails-assets.org' do
 end
 
 group :development, :test do
+  gem 'faker'
   gem 'capybara'
   gem 'capybara-webkit'
   gem 'capybara-email'
@@ -72,7 +77,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'faker'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'json_spec'
 end
