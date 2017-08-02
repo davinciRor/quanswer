@@ -8,7 +8,7 @@ set :deploy_to, "/home/deployer/quanswer"
 set :deploy_user, 'deployer'
 set :user, 'deployer'
 
-append :linked_files, "config/database.yml .env"
+append :linked_files, "config/database.yml", ".env"
 
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 

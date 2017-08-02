@@ -56,6 +56,8 @@ gem 'whenever', :require => false
 gem 'oj'
 gem 'oj_mimic_json'
 
+gem 'therubyracer'
+
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 source 'https://rails-assets.org' do
