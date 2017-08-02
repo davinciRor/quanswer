@@ -58,7 +58,7 @@ gem 'oj_mimic_json'
 
 gem 'therubyracer'
 
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'dotenv-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
