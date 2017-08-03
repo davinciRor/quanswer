@@ -18,7 +18,7 @@ every 1.days do
 end
 
 every 60.minutes do
-  rake 'ts:index'
+  rake "ts:index RAILS_ENV=#{Rails.env}"
 end
 
 # Learn more: http://github.com/javan/whenever
