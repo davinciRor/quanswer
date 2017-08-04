@@ -8,7 +8,7 @@ require 'capistrano/bundler'
 require 'capistrano/rails'
 require 'capistrano/sidekiq'
 require 'whenever/capistrano'
-require 'capistrano/passenger'
+require 'capistrano3/unicorn'
 require 'capistrano/rails/console'
 require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git

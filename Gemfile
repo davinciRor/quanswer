@@ -59,6 +59,7 @@ gem 'oj_mimic_json'
 gem 'therubyracer'
 
 gem 'dotenv-rails'
+gem 'unicorn'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
@@ -100,8 +101,8 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano-passenger', require: false
   gem 'capistrano-rails-console', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
