@@ -1,52 +1,53 @@
 = render 'common/errors', resource: @answer
-.row.question data-question-id="#{@question.id}"
-  h2= @question.title
-  p= @question.body
-  - if user_signed_in?
-    - if current_user.subscribed_for?(@question)
-      = link_to 'Unsubscribe', subscriptions_path(id: current_user.subscribtion_for(@question)), method: :delete
-    - else
-      = link_to 'Subscribe', subscriptions_path(question_id: @question), method: :post
-  br
-  - if can?(:toogle_notify, @question)
-    - if @question.notify_author?
-      = link_to 'Unnotify', toogle_notify_question_path, method: :post
-    - else
-      = link_to 'Notify', toogle_notify_question_path, method: :post
-  br
-  - if can?(:destroy, @question)
-    = link_to 'Delete', question_path(@question), method: :delete
-  - if @question.attachments.any?
-    h3 Attachments
-    ul.question-attachments
-      - @question.attachments.each do |a|
-        li
-          = link_to a.file.identifier, a.file.url
-          - if can?(:destroy, a)
-            p= link_to "remove file", attachment_path(a), method: :delete, class: 'remove-file'
+- cache @question do
+  .row.question data-question-id="#{@question.id}"
+    h2= @question.title
+    p= @question.body
+    - if user_signed_in?
+      - if current_user.subscribed_for?(@question)
+        = link_to 'Unsubscribe', subscriptions_path(id: current_user.subscribtion_for(@question)), method: :delete
+      - else
+        = link_to 'Subscribe', subscriptions_path(question_id: @question), method: :post
+    br
+    - if can?(:toogle_notify, @question)
+      - if @question.notify_author?
+        = link_to 'Unnotify', toogle_notify_question_path, method: :post
+      - else
+        = link_to 'Notify', toogle_notify_question_path, method: :post
+    br
+    - if can?(:destroy, @question)
+      = link_to 'Delete', question_path(@question), method: :delete
+    - if @question.attachments.any?
+      h3 Attachments
+      ul.question-attachments
+        - @question.attachments.each do |a|
+          li
+            = link_to a.file.identifier, a.file.url
+            - if can?(:destroy, a)
+              p= link_to "remove file", attachment_path(a), method: :delete, class: 'remove-file'
 
-= render 'comments/question_comment_block', commentable: @question
+  = render 'comments/question_comment_block', commentable: @question
 
-.row
-  - if user_signed_in?
-    h4 Your answer
-    = form_for([@question, @answer], remote: true) do |f|
-      .answer-errors
-      .form-group
-        = f.label :body
-        = f.text_area :body, class: 'form-control'
-      .form-group
-        h4 Attachments
-        #files
-          = f.fields_for :attachments, @answer.attachments.build do |attachment|
-            = render 'attachments/file', f: attachment
-          .links
-            = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
-      .form-group
-        .actions
-          = f.submit 'Give an answer', class: 'btn btn-primary'
+  .row
+    - if user_signed_in?
+      h4 Your answer
+      = form_for([@question, @answer], remote: true) do |f|
+        .answer-errors
+        .form-group
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+        .form-group
+          h4 Attachments
+          #files
+            = f.fields_for :attachments, @answer.attachments.build do |attachment|
+              = render 'attachments/file', f: attachment
+            .links
+              = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
+        .form-group
+          .actions
+            = f.submit 'Give an answer', class: 'btn btn-primary'
 
-.row
-  h4 Answers
-  .answers
-    = render 'answers', question: @question
+  .row
+    h4 Answers
+    .answers
+      = render 'answers', question: @question
