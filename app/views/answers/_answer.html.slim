@@ -1,63 +1,63 @@
 - if answer.persisted?
-  - cache answer do
-    .card.answer data-answer-id="#{answer.id}" id=dom_id(answer)
-      - if answer.best?
-        .h4.card-title.best-answer-title
-          span.glyphicon.glyphicon-ok
-          span Best Answer
-      .card_block
-        h4.card-title
-          span= "Rating: "
-          span.valuation
-            = answer.rating
-        .vote-error
-        ul.nav.justify-content-end.votes
-          - if can?(:like, answer)
-            li.nav-item
-              = link_to like_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-like'
-                span
-                  i.glyphicon.glyphicon-thumbs-up.like
-          - if can?(:dislike, answer)
-            li.nav-item
-              = link_to dislike_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-dislike'
-                span
-                  i.glyphicon.glyphicon-thumbs-down.dislike
-          - if can?(:unvote, answer)
-            li.nav-item
-              = link_to unvote_answer_path(answer), method: :delete, remote: :true, class: 'answer-vote vote-unvote'
-                span
-                  i.glyphicon.glyphicon-remove-circle.unvote
-      .card-block
-        p.card-text
-          = answer.body
-      .card-block
-        = render 'comments/answer_comment_block', commentable: answer
-      .card-block
+  .card.answer data-answer-id="#{answer.id}" id=dom_id(answer)
+    - if answer.best?
+      .h4.card-title.best-answer-title
+        span.glyphicon.glyphicon-ok
+        span Best Answer
+    .card_block
+      h4.card-title
+        span= "Rating: "
+        span.valuation
+          = answer.rating
+      .vote-error
+      ul.nav.justify-content-end.votes
+        - if can?(:like, answer)
+          li.nav-item
+            = link_to like_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-like'
+              span
+                i.glyphicon.glyphicon-thumbs-up.like
+        - if can?(:dislike, answer)
+          li.nav-item
+            = link_to dislike_answer_path(answer), method: :post, remote: :true, class: 'answer-vote vote-dislike'
+              span
+                i.glyphicon.glyphicon-thumbs-down.dislike
+        - if can?(:unvote, answer)
+          li.nav-item
+            = link_to unvote_answer_path(answer), method: :delete, remote: :true, class: 'answer-vote vote-unvote'
+              span
+                i.glyphicon.glyphicon-remove-circle.unvote
+    .card-block
+      p.card-text
+        = answer.body
+    .card-block
+      = render 'comments/answer_comment_block', commentable: answer
+    .card-block
+      - cache collection_relation_cache_key_for(:attachment, answer)
         ul.answers-attachments
           - answer.attachments.each do |a|
             li= link_to a.file.identifier, a.file.url
             - if can?(:destroy, a)
               p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
-      .card-block
-        - if user_signed_in?
-          - if can?(:destroy, answer)
-            = link_to answer_path(answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
-              span.glyphicon.glyphicon-trash
-          - if can?(:edit, answer)
-            = link_to '', class: 'edit-answer-link btn btn-warning'
-              span.glyphicon.glyphicon-pencil
-            = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
-              .form-group
-                = f.label :body, 'Answer'
-                = f.text_area :body, class: 'form-control'
-              .form-group
-                h4 Attachments
-                #files
-                  = f.fields_for :attachments do |attachment|
-                    = render 'attachments/file', f: attachment
-                  .links
-                    = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
-              .actions
-                = f.submit 'Save', class: 'btn btn-warning'
-          - if can?(:make_best, answer)
-            = link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true, class: 'best-answer-btn btn btn-success', id: "best-answer-link-#{answer.id}"
+    .card-block
+      - if user_signed_in?
+        - if can?(:destroy, answer)
+          = link_to answer_path(answer), method: :delete, remote: true, class: 'delete-answer-link btn btn-danger', id: "delete-answer-link-#{answer.id}"
+            span.glyphicon.glyphicon-trash
+        - if can?(:edit, answer)
+          = link_to '', class: 'edit-answer-link btn btn-warning'
+            span.glyphicon.glyphicon-pencil
+          = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" }, method: :patch do |f|
+            .form-group
+              = f.label :body, 'Answer'
+              = f.text_area :body, class: 'form-control'
+            .form-group
+              h4 Attachments
+              #files
+                = f.fields_for :attachments do |attachment|
+                  = render 'attachments/file', f: attachment
+                .links
+                  = link_to_add_association 'Add', f, :attachments, partial: 'attachments/file'
+            .actions
+              = f.submit 'Save', class: 'btn btn-warning'
+        - if can?(:make_best, answer)
+          = link_to 'Best', make_best_answer_path(answer), method: :patch, remote: true, class: 'best-answer-btn btn btn-success', id: "best-answer-link-#{answer.id}"
