@@ -1,4 +1,5 @@
-li
-  p
-    strong= comment.user_email
-  p= comment.body
+- cache comment do
+  li
+    p
+      strong= comment.user_email
+    p= comment.body

@@ -32,11 +32,12 @@
     .card-block
       = render 'comments/answer_comment_block', commentable: answer
     .card-block
-      ul.answers-attachments
-        - answer.attachments.each do |a|
-          li= link_to a.file.identifier, a.file.url
-          - if can?(:destroy, a)
-            p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
+      - cache collection_relation_cache_key_for(:attachment, answer)
+        ul.answers-attachments
+          - answer.attachments.each do |a|
+            li= link_to a.file.identifier, a.file.url
+            - if can?(:destroy, a)
+              p= link_to 'remove file', attachment_path(a), method: :delete, class: 'remove-answer-file'
     .card-block
       - if user_signed_in?
         - if can?(:destroy, answer)
